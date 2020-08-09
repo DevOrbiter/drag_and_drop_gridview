@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/drag_and_drop_gridview.iml" filepath="$PROJECT_DIR$/drag_and_drop_gridview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/drag_and_drop_gridview_android.iml" filepath="$PROJECT_DIR$/android/drag_and_drop_gridview_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/example/android/drag_and_drop_gridview_example_android.iml" filepath="$PROJECT_DIR$/example/android/drag_and_drop_gridview_example_android.iml" />
+    </modules>
+  </component>
+</project>
