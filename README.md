@@ -38,8 +38,8 @@ import 'package:drag_and_drop_gridview/devdrag.dart';
 
 
 <p>
-<img src="https://github.com/DevOrbiter/drag_and_drop_gridview/tree/master/example/drag_and_drop_grid.gif?raw=true" width="180" title="DragAndDropGridView">
-<img src="https://github.com/DevOrbiter/drag_and_drop_gridview/tree/master/example/drag_drop_reorderable.gif?raw=true" width="180" title="ReorderableDragAndDropGridView">
+<img src="https://github.com/DevOrbiter/drag_and_drop_gridview/blob/master/example/gifs/drag_and_drop_grid.gif?raw=true" width="180" title="DragAndDropGridView">
+<img src="https://github.com/DevOrbiter/drag_and_drop_gridview/blob/master/example/gifs/drag_drop_reorderable.gif?raw=true" width="180" title="ReorderableDragAndDropGridView">
 </p>
 
 ### DragAndDropGridView
@@ -253,6 +253,6 @@ class _MyAppState extends State<MyApp> {
 
 #### DragAndDropGridView (Reorderable)
 
-<img src="https://github.com/DevOrbiter/drag_and_drop_gridview/tree/master/example/drag_drop_reorderable.gif?raw=true" width="360" title="ReorderableDragAndDropGridView">
+<img src="https://github.com/DevOrbiter/drag_and_drop_gridview/blob/master/example/gifs/drag_drop_reorderable.gif?raw=true" width="360" title="ReorderableDragAndDropGridView">
 
 
