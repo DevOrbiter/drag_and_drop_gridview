@@ -15,9 +15,9 @@ samples, guidance on mobile development, and a full API reference.
 
 ** Kindly submit PR if you encounter issues. Updates might be slow...
 
-# reorderables
+# drag_and_drop_gridview
 
-[![pub package](https://img.shields.io/pub/v/reorderables.svg)](https://pub.dartlang.org/packages/reorderables)
+[![pub package](https://img.shields.io/pub/v/drag_and_drop_gridview?style=plastic)](https://pub.dartlang.org/packages/drag_and_drop_gridview)
 [![Awesome Flutter](https://img.shields.io/badge/Awesome-Flutter-blue.svg?longCache=true&style=flat-square)](https://github.com/Solido/awesome-flutter)
 
 
