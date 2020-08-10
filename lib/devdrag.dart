@@ -130,7 +130,7 @@ class _DragAndDropGridViewState extends State<DragAndDropGridView> {
                     });
                   },
                 ),
-                onWillAccept: (data) => widget.onWillAccept(data),
+                onWillAccept: (data) => widget.onWillAccept(data, pos),
                 onAccept: (data) {
                   print(data);
                   widget.onReorder(data, pos);
