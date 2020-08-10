@@ -69,7 +69,7 @@ class _MyAppState extends State<MyApp> {
               }),
             ),
             itemCount: _imageUris.length,
-            onWillAccept: (data, pos) => true,
+            onWillAccept: (oldIndex, newIndex) => true,
             onReorder: (oldIndex, newIndex) {
               final temp = _imageUris[oldIndex];
               _imageUris[oldIndex] = _imageUris[newIndex];
