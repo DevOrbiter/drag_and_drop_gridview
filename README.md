@@ -12,7 +12,7 @@ If you appreciate the content 📖, support projects visibility, give 👍| ⭐|
 To use this [package](https://pub.dev/packages/drag_and_drop_gridview), add `drag_and_drop_gridview` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
 ```
 dependencies:
-  drag_and_drop_gridview: ^1.0.0
+  drag_and_drop_gridview: ^1.0.2
 ```
 And import the package in your code.
 ``` dart
@@ -27,10 +27,34 @@ import 'package:drag_and_drop_gridview/devdrag.dart';
 <img src="https://github.com/DevOrbiter/drag_and_drop_gridview/blob/master/example/gifs/reorderablehover.gif?raw=true" width="180" title="ReorderableDragAndDropGridView">
 </p>
 
-### DragAndDropGridView
+### Overview
 
 DragAndDropGridView has the all same parameters that GridView.builder constructor has. But in DragAndDropGridView there are some required params `itemBuilder`, `onWillAccept`, `onReorder` and `gridDelegate`.
 
+```dart
+DragAndDropGridView(
+    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 3 / 4.5,
+    ),
+    padding: EdgeInsets.all(20),
+    itemBuilder: (context, index) => Card(
+        elevation: 2,
+        child: Image.network(
+                _imageUris[index],
+        ),
+    ),
+    itemCount: _imageUris.length,
+    onWillAccept: (oldIndex, newIndex) => true,
+    onReorder: (oldIndex, newIndex) {
+        _imageUris[oldIndex] = _imageUris[newIndex];
+        setState(() {});
+    },
+)
+```
+
+### DragAndDropGridView
+Below example shows you how to implement `DragAndDropGridView` easily.
 
 ``` dart
 import 'package:drag_and_drop_gridview/devdrag.dart';
@@ -120,7 +144,9 @@ class _MyAppState extends State<MyApp> {
 }
 
 ```
+#### DragAndDropGridView
 
+<img src="https://github.com/DevOrbiter/drag_and_drop_gridview/blob/master/example/gifs/drag_and_drop_grid.gif?raw=true" width="360" title="DragAndDropGridView">
 
 ### DragAndDropGridView (Reorderable)
 
@@ -398,7 +424,7 @@ class _MyAppState extends State<MyApp> {
 
 #### DragAndDropGridView with hover effect (Reorderable)
 
-<img src="https://github.com/DevOrbiter/drag_and_drop_gridview/blob/master/example/gifs/reorderablehover.gif?raw=true" width="360" title="ReorderableDragAndDropGridView">
+<img src="https://github.com/DevOrbiter/drag_and_drop_gridview/blob/master/example/gifs/reorderablehover.gif?raw=true" width="360" title="ReorderableDragAndDropGridViewHover">
 
 
 
@@ -507,7 +533,7 @@ class _MyAppState extends State<MyApp> {
 
 #### DragAndDropGridView change child
 
-<img src="https://github.com/DevOrbiter/drag_and_drop_gridview/blob/master/example/gifs/childwhendrag.gif?raw=true" width="360" title="ReorderableDragAndDropGridView">
+<img src="https://github.com/DevOrbiter/drag_and_drop_gridview/blob/master/example/gifs/childwhendrag.gif?raw=true" width="360" title="ReorderableDragAndDropGridViewChildChange">
 
 
 #### DragAndDropGridView change feedback
@@ -613,7 +639,7 @@ class _MyAppState extends State<MyApp> {
 
 #### DragAndDropGridView change feedback
 
-<img src="https://github.com/DevOrbiter/drag_and_drop_gridview/blob/master/example/gifs/childfeedback.gif?raw=true" width="360" title="ReorderableDragAndDropGridView">
+<img src="https://github.com/DevOrbiter/drag_and_drop_gridview/blob/master/example/gifs/childfeedback.gif?raw=true" width="360" title="ReorderableDragAndDropGridViewFeedbackChange">
 
 ## Support
 
