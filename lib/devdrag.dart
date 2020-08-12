@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 class DragAndDropGridView extends StatefulWidget {
   final Key key;
+
+  // set the scroll direction
   final Axis scrollDirection;
   final bool reverse;
   final Widget header;
@@ -10,10 +12,19 @@ class DragAndDropGridView extends StatefulWidget {
   final bool primary;
   final ScrollPhysics physics;
   final bool shrinkWrap;
+
+  // If you want to set custom feedback child at the time of drag then set this parameter to true
   final bool isCustomFeedback;
+
+  // If you want to set custom child at the time of drag then set this parameter to true
   final bool isCustomChildWhenDragging;
+
+  // onWillAccept determine whether the drag object will accept or not. Based on that return a bool.
   final Function onWillAccept;
+
+  // This method onReorder has two parameters oldIndex and newIndex
   final Function onReorder;
+
   final EdgeInsetsGeometry padding;
   final SliverGridDelegate gridDelegate;
   final IndexedWidgetBuilder itemBuilder;
@@ -25,7 +36,11 @@ class DragAndDropGridView extends StatefulWidget {
   final int semanticChildCount;
   final DragStartBehavior dragStartBehavior;
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
+
+  // set you feedback child here and to get this working please set isCustomFeedback to true
   final Function feedback;
+
+  // set you custom child here and to get this working please set isCustomChildWhenDragging to true
   final Function childWhenDragging;
 
   DragAndDropGridView(

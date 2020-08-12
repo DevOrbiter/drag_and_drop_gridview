@@ -12,7 +12,7 @@ If you appreciate the content 📖, support projects visibility, give 👍| ⭐|
 To use this [package](https://pub.dev/packages/drag_and_drop_gridview), add `drag_and_drop_gridview` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
 ```
 dependencies:
-  drag_and_drop_gridview: ^1.0.2
+  drag_and_drop_gridview: ^1.0.3
 ```
 And import the package in your code.
 ``` dart

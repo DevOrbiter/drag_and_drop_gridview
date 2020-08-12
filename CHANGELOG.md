@@ -1,4 +1,9 @@
-## [1.0.1] - Aug 11, 2020.
+## [1.0.3] - Aug 12, 2020.
+
+* Updated README.md.
+* Add web support.
+
+## [1.0.2] - Aug 11, 2020.
 
 * Updated README.md and description.
 

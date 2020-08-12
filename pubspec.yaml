@@ -1,6 +1,6 @@
 name: drag_and_drop_gridview
-description: Drag And Drop GridView extends the functionality of the GridView widget in Flutter and gives you the freedom of creating a reorder the GridViewItems simple by Drag And Drop. It is super easy to implement and beautiful to use.
-version: 1.0.2
+description: Drag And Drop GridView extends the functionality of the GridView widget in Flutter and gives you the freedom of creating a reorder the GridViewItems simple by Drag And Drop.
+version: 1.0.3
 author: devorbiter
 homepage: https://github.com/DevOrbiter/drag_and_drop_gridview
 
