@@ -1,3 +1,7 @@
+## [1.0.4] - Aug 16, 2020.
+
+* Updated README.md.
+
 ## [1.0.3] - Aug 12, 2020.
 
 * Updated README.md.
