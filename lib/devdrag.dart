@@ -102,59 +102,65 @@ class _DragAndDropGridViewState extends State<DragAndDropGridView> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        LayoutBuilder(builder: (context, constraints) {
-          _gridViewHeight = constraints.maxHeight;
-          return GridView.builder(
-            key: widget.key,
-            reverse: widget.reverse,
-            shrinkWrap: widget.shrinkWrap,
-            controller: _scrollController,
-            scrollDirection: widget.scrollDirection,
-            padding: widget.padding,
-            semanticChildCount: widget.semanticChildCount,
-            physics: widget.physics,
-            addSemanticIndexes: widget.addSemanticIndexes,
-            addRepaintBoundaries: widget.addRepaintBoundaries,
-            addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
-            cacheExtent: widget.cacheExtent,
-            itemCount: widget.itemCount,
-            primary: widget.primary,
-            dragStartBehavior: widget.dragStartBehavior,
-            keyboardDismissBehavior: widget.keyboardDismissBehavior,
-            itemBuilder: (context, pos) {
-              final mainWidget = widget.itemBuilder(context, pos);
-              return DragTarget(
-                builder: (context, List<int> candidateData, rejectedData) =>
-                    LongPressDraggable(
-                  data: pos,
-                  child: mainWidget,
-                  feedback: widget.isCustomFeedback
-                      ? widget.feedback(pos)
-                      : mainWidget,
-                  childWhenDragging: widget.isCustomChildWhenDragging
-                      ? widget.childWhenDragging(pos)
-                      : mainWidget,
-                  onDragStarted: () {
-                    setState(() {
-                      _isDragStart = true;
-                    });
-                  },
-                  onDragCompleted: () {
-                    setState(() {
-                      _isDragStart = false;
-                    });
-                  },
+        ListView(
+          children: [
+            widget.header ??
+                SizedBox(
+                  height: 0.2,
                 ),
-                onWillAccept: (data) => widget.onWillAccept(data, pos),
-                onAccept: (data) {
-                  print(data);
-                  widget.onReorder(data, pos);
+             GridView.builder(
+                key: widget.key,
+                reverse: widget.reverse,
+                shrinkWrap: true,
+                controller: _scrollController,
+                scrollDirection: widget.scrollDirection,
+                padding: widget.padding,
+                semanticChildCount: widget.semanticChildCount,
+                physics: widget.physics,
+                addSemanticIndexes: widget.addSemanticIndexes,
+                addRepaintBoundaries: widget.addRepaintBoundaries,
+                addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
+                cacheExtent: widget.cacheExtent,
+                itemCount: widget.itemCount,
+                primary: widget.primary,
+                dragStartBehavior: widget.dragStartBehavior,
+                keyboardDismissBehavior: widget.keyboardDismissBehavior,
+                itemBuilder: (context, pos) {
+                  final mainWidget = widget.itemBuilder(context, pos);
+                  return DragTarget(
+                    builder: (context, List<int> candidateData, rejectedData) =>
+                        LongPressDraggable(
+                      data: pos,
+                      child: mainWidget,
+                      feedback: widget.isCustomFeedback
+                          ? widget.feedback(pos)
+                          : mainWidget,
+                      childWhenDragging: widget.isCustomChildWhenDragging
+                          ? widget.childWhenDragging(pos)
+                          : mainWidget,
+                      onDragStarted: () {
+                        setState(() {
+                          _isDragStart = true;
+                        });
+                      },
+                      onDragCompleted: () {
+                        setState(() {
+                          _isDragStart = false;
+                        });
+                      },
+                    ),
+                    onWillAccept: (data) => widget.onWillAccept(data, pos),
+                    onAccept: (data) {
+                      print(data);
+                      widget.onReorder(data, pos);
+                    },
+                  );
                 },
-              );
-            },
-            gridDelegate: widget.gridDelegate,
-          );
-        }),
+                gridDelegate: widget.gridDelegate,
+              ),
+            
+          ],
+        ),
         !_isDragStart
             ? SizedBox()
             : Align(

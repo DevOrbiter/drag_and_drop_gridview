@@ -45,6 +45,7 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Center(
           child: DragAndDropGridView(
+            header: Container(color: Colors.amber ,child: Text("Hello",textAlign: TextAlign.center,),),
             controller: _scrollController,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
