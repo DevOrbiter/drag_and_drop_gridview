@@ -13,7 +13,6 @@ class MainGridView extends StatefulWidget {
       @required this.onReorder,
       this.childWhenDragging,
       this.controller,
-      this.isCustomDragItem,
       this.isVertical = true,
       this.padding,
       this.semanticChildCount,
@@ -61,7 +60,6 @@ class MainGridView extends StatefulWidget {
   final int semanticChildCount;
   final DragStartBehavior dragStartBehavior;
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
-  final bool isCustomDragItem;
   final bool isVertical;
 
   // set you feedback child here and to get this working please set isCustomFeedback to true
@@ -137,9 +135,8 @@ class _MainGridViewState extends State<MainGridView> {
       dragStartBehavior: widget.dragStartBehavior,
       keyboardDismissBehavior: widget.keyboardDismissBehavior,
       itemBuilder: (context, pos) {
-        var mainWidget;
-        if (widget.isCustomDragItem) {
-          mainWidget = widget.itemBuilder(context, pos) as DragItem;
+        var mainWidget = widget.itemBuilder(context, pos);
+        if (mainWidget is DragItem) {
           if (mainWidget.isDraggable) {
             return mainWidget;
           }

@@ -35,7 +35,6 @@ class DragAndDropGridView extends MainGridView {
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
     ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
         ScrollViewKeyboardDismissBehavior.manual,
-    bool isCustomDragItem = false,
     // set you feedback child here and to get this working please set isCustomFeedback to true
     Function feedback,
     // set you custom child here and to get this working please set isCustomChildWhenDragging to true
@@ -54,7 +53,6 @@ class DragAndDropGridView extends MainGridView {
           onReorder: onReorder,
           childWhenDragging: childWhenDragging,
           controller: controller,
-          isCustomDragItem: isCustomDragItem,
           padding: padding,
           semanticChildCount: semanticChildCount,
           physics: physics,
@@ -101,7 +99,6 @@ class DragAndDropGridView extends MainGridView {
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
     ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
         ScrollViewKeyboardDismissBehavior.manual,
-    bool isCustomDragItem = false,
     // set you feedback child here and to get this working please set isCustomFeedback to true
     Function feedback,
     // set you custom child here and to get this working please set isCustomChildWhenDragging to true
@@ -119,7 +116,6 @@ class DragAndDropGridView extends MainGridView {
           onReorder: onReorder,
           childWhenDragging: childWhenDragging,
           controller: controller,
-          isCustomDragItem: isCustomDragItem,
           padding: padding,
           semanticChildCount: semanticChildCount,
           physics: physics,
