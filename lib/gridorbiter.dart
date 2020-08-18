@@ -6,7 +6,9 @@ class MainGridView extends StatefulWidget {
   MainGridView(
       {this.key,
       this.header,
+      this.headers,
       this.reverse,
+      this.headerGridDelegate,
       @required this.itemBuilder,
       @required this.onWillAccept,
       this.feedback,
@@ -20,9 +22,14 @@ class MainGridView extends StatefulWidget {
       this.addAutomaticKeepAlives,
       this.addRepaintBoundaries,
       this.addSemanticIndexes,
+      this.headerPadding,
       this.cacheExtent,
       this.itemCount,
+      this.allHeaderChildNonDraggable = false,
       this.primary,
+      this.isStickyHeader = false,
+      this.onReorderHeader,
+      this.onWillAcceptHeader,
       this.isCustomFeedback,
       this.isCustomChildWhenDragging,
       @required this.gridDelegate,
@@ -45,11 +52,18 @@ class MainGridView extends StatefulWidget {
 
   // onWillAccept determine whether the drag object will accept or not. Based on that return a bool.
   final Function onWillAccept;
+  final Function onWillAcceptHeader;
+  final bool allHeaderChildNonDraggable;
+  final EdgeInsetsGeometry headerPadding;
 
   // This method onReorder has two parameters oldIndex and newIndex
   final Function onReorder;
+  final Function onReorderHeader;
 
   final EdgeInsetsGeometry padding;
+  final List<Widget> headers;
+  final bool isStickyHeader;
+  final SliverGridDelegate headerGridDelegate;
   final SliverGridDelegate gridDelegate;
   final IndexedWidgetBuilder itemBuilder;
   final int itemCount;
@@ -141,40 +155,74 @@ class _MainGridViewState extends State<MainGridView> {
             return mainWidget;
           }
           print("${mainWidget.key} *************");
-        } else {
-          mainWidget = widget.itemBuilder(context, pos);
-          print("${mainWidget.key} *************");
         }
 
-        return DragTarget(
-          builder: (context, List<int> candidateData, rejectedData) =>
-              LongPressDraggable(
-            data: pos,
-            child: mainWidget,
-            feedback:
-                widget.isCustomFeedback ? widget.feedback(pos) : mainWidget,
-            childWhenDragging: widget.isCustomChildWhenDragging
-                ? widget.childWhenDragging(pos)
-                : mainWidget,
-            onDragStarted: () {
-              setState(() {
-                _isDragStart = true;
-              });
-            },
-            onDragCompleted: () {
-              setState(() {
-                _isDragStart = false;
-              });
-            },
-          ),
-          onWillAccept: (data) => widget.onWillAccept(data, pos),
-          onAccept: (data) {
-            print(data);
-            widget.onReorder(data, pos);
-          },
-        );
+        return _gridChild(mainWidget, pos);
       },
       gridDelegate: widget.gridDelegate,
+    );
+  }
+
+  Widget _gridChild(Widget mainWidget, int pos, {bool isFromArrange = false}) {
+    return DragTarget(
+      builder: (context, List<int> candidateData, rejectedData) =>
+          LongPressDraggable(
+        data: pos,
+        child: mainWidget,
+        feedback: widget.isCustomFeedback ? widget.feedback(pos) : mainWidget,
+        childWhenDragging: widget.isCustomChildWhenDragging
+            ? widget.childWhenDragging(pos)
+            : mainWidget,
+        onDragStarted: () {
+          setState(() {
+            _isDragStart = true;
+          });
+        },
+        onDragCompleted: () {
+          setState(() {
+            _isDragStart = false;
+          });
+        },
+      ),
+      onWillAccept: (data) => isFromArrange
+          ? widget.onWillAcceptHeader(data, pos)
+          : widget.onWillAccept(data, pos),
+      onAccept: (data) {
+        if (isFromArrange)
+          widget.onReorderHeader(data, pos);
+        else
+          widget.onReorder(data, pos);
+      },
+    );
+  }
+
+  Widget _tableBuilder() {
+    return Column(
+      children: [
+        GridView.builder(
+          shrinkWrap: true,
+          padding: widget.headerPadding,
+          gridDelegate: widget.headerGridDelegate ?? widget.gridDelegate,
+          itemBuilder: (context, pos) {
+            var mainWidget = widget.headers[pos];
+            if (!widget.allHeaderChildNonDraggable) {
+              return _gridChild(mainWidget, pos);
+            }
+            if (mainWidget is DragItem) {
+              if (mainWidget.isDraggable) {
+                return mainWidget;
+              }
+              print("${mainWidget.key} *************");
+            }
+
+            return _gridChild(mainWidget, pos);
+          },
+          itemCount: widget.headers.length,
+        ),
+        Expanded(
+          child: _dragAndDropGrid(),
+        ),
+      ],
     );
   }
 
@@ -186,7 +234,9 @@ class _MainGridViewState extends State<MainGridView> {
           _gridViewHeight = constraints.maxHeight;
           _gridViewWidth = constraints.maxWidth;
           print("$_gridViewHeight +  hhhhhhh");
-          return widget.header == null ? _dragAndDropGrid() : _headerChild();
+          return widget.isStickyHeader
+              ? _tableBuilder()
+              : widget.header == null ? _dragAndDropGrid() : _headerChild();
         }),
         !_isDragStart
             ? SizedBox()

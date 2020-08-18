@@ -132,4 +132,77 @@ class DragAndDropGridView extends MainGridView {
           keyboardDismissBehavior: keyboardDismissBehavior,
           isVertical: false,
         );
+
+  DragAndDropGridView.stickyHeader({
+    Key key,
+    bool reverse = false,
+    ScrollController controller,
+    bool primary,
+    ScrollPhysics physics,
+
+    // If you want to set custom feedback child at the time of drag then set this parameter to true
+    bool isCustomFeedback = false,
+
+    // If you want to set custom child at the time of drag then set this parameter to true
+    bool isCustomChildWhenDragging = false,
+
+    // onWillAccept determine whether the drag object will accept or not. Based on that return a bool.
+    @required Function onWillAccept,
+    @required List<Widget> headerChildren,
+    bool allHeaderChildNonDraggable = false,
+    SliverGridDelegate headerGridDelegate,
+
+    // This method onReorder has two parameters oldIndex and newIndex
+    @required Function onReorder,
+    EdgeInsetsGeometry headerPadding,
+    EdgeInsetsGeometry padding,
+    @required SliverGridDelegate gridDelegate,
+    @required IndexedWidgetBuilder itemBuilder,
+    int itemCount,
+    bool addAutomaticKeepAlives = true,
+    bool addRepaintBoundaries = true,
+    bool addSemanticIndexes = true,
+    double cacheExtent,
+    int semanticChildCount,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
+    // set you feedback child here and to get this working please set isCustomFeedback to true
+    Function feedback,
+    // set you custom child here and to get this working please set isCustomChildWhenDragging to true
+    Function childWhenDragging,
+  })  : assert(itemBuilder != null &&
+            gridDelegate != null &&
+            onReorder != null &&
+            onWillAccept != null &&
+            headerChildren != null),
+        super(
+          key: key,
+          reverse: reverse,
+          itemBuilder: itemBuilder,
+          onWillAccept: onWillAccept,
+          feedback: feedback,
+          onReorder: onReorder,
+          childWhenDragging: childWhenDragging,
+          controller: controller,
+          padding: padding,
+          semanticChildCount: semanticChildCount,
+          physics: physics,
+          addAutomaticKeepAlives: addAutomaticKeepAlives,
+          addRepaintBoundaries: addRepaintBoundaries,
+          addSemanticIndexes: addSemanticIndexes,
+          cacheExtent: cacheExtent,
+          itemCount: itemCount,
+          primary: primary,
+          isCustomFeedback: isCustomFeedback,
+          isCustomChildWhenDragging: isCustomChildWhenDragging,
+          gridDelegate: gridDelegate,
+          dragStartBehavior: dragStartBehavior,
+          keyboardDismissBehavior: keyboardDismissBehavior,
+          headers: headerChildren,
+          isStickyHeader: true,
+          allHeaderChildNonDraggable: allHeaderChildNonDraggable,
+          headerPadding: headerPadding,
+          headerGridDelegate: headerGridDelegate,
+        );
 }

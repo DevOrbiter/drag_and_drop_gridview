@@ -45,7 +45,32 @@ class _MyAppState extends State<MyApp> {
           title: const Text('DragAndDropGridView'),
         ),
         body: Center(
-          child: DragAndDropGridView(
+          child: DragAndDropGridView.stickyHeader(
+            headerChildren: [
+              Card(
+                elevation: 2,
+                child: Center(
+                  child: Text(
+                    "1",
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              Card(
+                elevation: 2,
+                child: Center(
+                  child: Text(
+                    "2",
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ],
+            headerPadding: EdgeInsets.all(20),
+            headerGridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 2.8,
+            ),
             controller: _scrollController,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
