@@ -3,8 +3,6 @@ import 'package:flutter/gestures.dart';
 import 'package:drag_and_drop_gridview/drag.dart';
 
 class MainGridView extends StatefulWidget {
-
-
   MainGridView(
       {this.key,
       this.header,
@@ -32,7 +30,7 @@ class MainGridView extends StatefulWidget {
       this.dragStartBehavior = DragStartBehavior.start,
       this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual});
 
-     final Key key;
+  final Key key;
 
   final bool reverse;
   final Widget header;
@@ -72,7 +70,6 @@ class MainGridView extends StatefulWidget {
   // set you custom child here and to get this working please set isCustomChildWhenDragging to true
   final Function childWhenDragging;
 
-
   @override
   _MainGridViewState createState() => _MainGridViewState();
 }
@@ -80,7 +77,7 @@ class MainGridView extends StatefulWidget {
 class _MainGridViewState extends State<MainGridView> {
   ScrollController _scrollController;
   ScrollController _scrollController2;
-  var _gridViewHeight;
+  var _gridViewHeight, _gridViewWidth;
   var _isDragStart = false;
 
   @override
@@ -103,6 +100,16 @@ class _MainGridViewState extends State<MainGridView> {
         curve: Curves.linear, duration: Duration(milliseconds: 500));
   }
 
+  _moveLeft() {
+    _scrollController.animateTo(_scrollController.offset - _gridViewWidth,
+        curve: Curves.linear, duration: Duration(milliseconds: 500));
+  }
+
+  _moveRight() {
+    _scrollController.animateTo(_scrollController.offset + _gridViewWidth,
+        curve: Curves.linear, duration: Duration(milliseconds: 500));
+  }
+
   Widget _headerChild() {
     return ListView(
       controller: _scrollController,
@@ -118,7 +125,7 @@ class _MainGridViewState extends State<MainGridView> {
       controller:
           widget.header == null ? _scrollController : _scrollController2,
       padding: widget.padding,
-      scrollDirection: widget.isVertical ? Axis.vertical :  Axis.horizontal,
+      scrollDirection: widget.isVertical ? Axis.vertical : Axis.horizontal,
       semanticChildCount: widget.semanticChildCount,
       physics: widget.physics,
       addSemanticIndexes: widget.addSemanticIndexes,
@@ -180,21 +187,29 @@ class _MainGridViewState extends State<MainGridView> {
       children: [
         LayoutBuilder(builder: (context, constraints) {
           _gridViewHeight = constraints.maxHeight;
+          _gridViewWidth = constraints.maxWidth;
           print("$_gridViewHeight +  hhhhhhh");
           return widget.header == null ? _dragAndDropGrid() : _headerChild();
         }),
         !_isDragStart
             ? SizedBox()
             : Align(
-                alignment: Alignment.topCenter,
+                alignment: widget.isVertical
+                    ? Alignment.topCenter
+                    : Alignment.centerRight,
                 child: DragTarget(
                   builder: (context, List<int> candidateData, rejectedData) =>
                       Container(
-                    height: 20,
+                    height: widget.isVertical ? 20 : double.infinity,
+                    width: widget.isVertical ? double.infinity : 20,
                     color: Colors.transparent,
                   ),
                   onWillAccept: (data) {
                     print("helo down");
+                    if (!widget.isVertical) {
+                      _moveRight();
+                      return false;
+                    }
                     _moveUp();
                     return false;
                   },
@@ -203,15 +218,22 @@ class _MainGridViewState extends State<MainGridView> {
         !_isDragStart
             ? SizedBox()
             : Align(
-                alignment: Alignment.bottomCenter,
+                alignment: widget.isVertical
+                    ? Alignment.bottomCenter
+                    : Alignment.centerLeft,
                 child: DragTarget(
                   builder: (context, List<int> candidateData, rejectedData) =>
                       Container(
-                    height: 20,
+                    height: widget.isVertical ? 20 : double.infinity,
+                    width: widget.isVertical ? double.infinity : 20,
                     color: Colors.transparent,
                   ),
                   onWillAccept: (data) {
                     print("helo down");
+                    if (!widget.isVertical) {
+                      _moveLeft();
+                      return false;
+                    }
                     _moveDown();
                     return false;
                   },

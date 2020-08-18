@@ -45,8 +45,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('DragAndDropGridView'),
         ),
         body: Center(
-          child: DragAndDropGridView.horizontal(
-            isCustomDragItem: true,
+          child: DragAndDropGridView(
             controller: _scrollController,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
@@ -54,7 +53,7 @@ class _MyAppState extends State<MyApp> {
             ),
             padding: EdgeInsets.all(20),
             itemBuilder: (context, index) => DragItem(
-              isDraggable: index  == 0 ? true : false,
+              isDraggable: index == 0 ? true : false,
               child: Card(
                 elevation: 2,
                 child: LayoutBuilder(builder: (context, costrains) {

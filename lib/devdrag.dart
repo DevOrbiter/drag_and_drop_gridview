@@ -4,11 +4,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class DragAndDropGridView extends MainGridView {
-
-
-
-
-
   DragAndDropGridView({
     Key key,
     bool reverse = false,
@@ -38,13 +33,17 @@ class DragAndDropGridView extends MainGridView {
     double cacheExtent,
     int semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
     bool isCustomDragItem = false,
     // set you feedback child here and to get this working please set isCustomFeedback to true
     Function feedback,
     // set you custom child here and to get this working please set isCustomChildWhenDragging to true
     Function childWhenDragging,
-  })  : 
+  })  : assert(itemBuilder != null &&
+            gridDelegate != null &&
+            onReorder != null &&
+            onWillAccept != null),
         super(
           key: key,
           reverse: reverse,
@@ -100,13 +99,17 @@ class DragAndDropGridView extends MainGridView {
     double cacheExtent,
     int semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
     bool isCustomDragItem = false,
     // set you feedback child here and to get this working please set isCustomFeedback to true
     Function feedback,
     // set you custom child here and to get this working please set isCustomChildWhenDragging to true
     Function childWhenDragging,
-  })  : 
+  })  : assert(itemBuilder != null &&
+            gridDelegate != null &&
+            onReorder != null &&
+            onWillAccept != null),
         super(
           key: key,
           reverse: reverse,

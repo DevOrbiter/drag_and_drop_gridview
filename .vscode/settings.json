@@ -1,0 +1,4 @@
+{
+    "terminal.integrated.inheritEnv": true,
+    "terminal.integrated.shell.linux": "/bin/bash",
+}
