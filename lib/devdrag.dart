@@ -148,12 +148,15 @@ class DragAndDropGridView extends MainGridView {
 
     // onWillAccept determine whether the drag object will accept or not. Based on that return a bool.
     @required Function onWillAccept,
-    @required List<Widget> headerChildren,
+    Function onWillAcceptHeader,
+    @required IndexedWidgetBuilder itemBuilderHeader,
     bool allHeaderChildNonDraggable = false,
     SliverGridDelegate headerGridDelegate,
 
     // This method onReorder has two parameters oldIndex and newIndex
     @required Function onReorder,
+    Function onReorderHeader,
+    int headerItemCount,
     EdgeInsetsGeometry headerPadding,
     EdgeInsetsGeometry padding,
     @required SliverGridDelegate gridDelegate,
@@ -175,7 +178,7 @@ class DragAndDropGridView extends MainGridView {
             gridDelegate != null &&
             onReorder != null &&
             onWillAccept != null &&
-            headerChildren != null),
+            itemBuilderHeader != null),
         super(
           key: key,
           reverse: reverse,
@@ -183,6 +186,8 @@ class DragAndDropGridView extends MainGridView {
           onWillAccept: onWillAccept,
           feedback: feedback,
           onReorder: onReorder,
+          onReorderHeader: onReorderHeader,
+          onWillAcceptHeader: onWillAcceptHeader,
           childWhenDragging: childWhenDragging,
           controller: controller,
           padding: padding,
@@ -199,10 +204,11 @@ class DragAndDropGridView extends MainGridView {
           gridDelegate: gridDelegate,
           dragStartBehavior: dragStartBehavior,
           keyboardDismissBehavior: keyboardDismissBehavior,
-          headers: headerChildren,
+          itemBuilderHeader: itemBuilderHeader,
           isStickyHeader: true,
           allHeaderChildNonDraggable: allHeaderChildNonDraggable,
           headerPadding: headerPadding,
           headerGridDelegate: headerGridDelegate,
+          headerItemCount:headerItemCount,
         );
 }

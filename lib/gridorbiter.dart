@@ -6,7 +6,7 @@ class MainGridView extends StatefulWidget {
   MainGridView(
       {this.key,
       this.header,
-      this.headers,
+      this.headerItemCount,
       this.reverse,
       this.headerGridDelegate,
       @required this.itemBuilder,
@@ -14,6 +14,7 @@ class MainGridView extends StatefulWidget {
       this.feedback,
       @required this.onReorder,
       this.childWhenDragging,
+      this.itemBuilderHeader,
       this.controller,
       this.isVertical = true,
       this.padding,
@@ -61,11 +62,12 @@ class MainGridView extends StatefulWidget {
   final Function onReorderHeader;
 
   final EdgeInsetsGeometry padding;
-  final List<Widget> headers;
+  final int headerItemCount;
   final bool isStickyHeader;
   final SliverGridDelegate headerGridDelegate;
   final SliverGridDelegate gridDelegate;
   final IndexedWidgetBuilder itemBuilder;
+  final IndexedWidgetBuilder itemBuilderHeader;
   final int itemCount;
   final bool addAutomaticKeepAlives;
   final bool addRepaintBoundaries;
@@ -173,6 +175,7 @@ class _MainGridViewState extends State<MainGridView> {
         childWhenDragging: widget.isCustomChildWhenDragging
             ? widget.childWhenDragging(pos)
             : mainWidget,
+        axis: isFromArrange ? Axis.horizontal : null,
         onDragStarted: () {
           setState(() {
             _isDragStart = true;
@@ -199,25 +202,32 @@ class _MainGridViewState extends State<MainGridView> {
   Widget _tableBuilder() {
     return Column(
       children: [
-        GridView.builder(
-          shrinkWrap: true,
-          padding: widget.headerPadding,
-          gridDelegate: widget.headerGridDelegate ?? widget.gridDelegate,
-          itemBuilder: (context, pos) {
-            var mainWidget = widget.headers[pos];
-            if (!widget.allHeaderChildNonDraggable) {
-              return _gridChild(mainWidget, pos);
-            }
-            if (mainWidget is DragItem) {
-              if (mainWidget.isDraggable) {
+        NotificationListener<OverscrollIndicatorNotification>(
+          onNotification: (overscroll) {
+            overscroll.disallowGlow();
+            return true;
+          },
+          child: GridView.builder(
+            shrinkWrap: true,
+            padding: widget.headerPadding,
+            physics: ScrollPhysics(),
+            gridDelegate: widget.headerGridDelegate ?? widget.gridDelegate,
+            itemBuilder: (context, pos) {
+              var mainWidget = widget.itemBuilderHeader(context, pos);
+              if (widget.allHeaderChildNonDraggable) {
                 return mainWidget;
               }
-              print("${mainWidget.key} *************");
-            }
+              if (mainWidget is DragItem) {
+                if (mainWidget.isDraggable) {
+                  return mainWidget;
+                }
+                print("${mainWidget.key} *************");
+              }
 
-            return _gridChild(mainWidget, pos);
-          },
-          itemCount: widget.headers.length,
+              return _gridChild(mainWidget, pos, isFromArrange: true);
+            },
+            itemCount: widget.headerItemCount,
+          ),
         ),
         Expanded(
           child: _dragAndDropGrid(),
