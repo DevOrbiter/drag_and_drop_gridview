@@ -209,6 +209,84 @@ class DragAndDropGridView extends MainGridView {
           allHeaderChildNonDraggable: allHeaderChildNonDraggable,
           headerPadding: headerPadding,
           headerGridDelegate: headerGridDelegate,
-          headerItemCount:headerItemCount,
+          headerItemCount: headerItemCount,
         );
+  DragAndDropGridView.horizontalStickyHeader({
+    Key key,
+    bool reverse = false,
+    ScrollController controller,
+    bool primary,
+    ScrollPhysics physics,
+
+    // If you want to set custom feedback child at the time of drag then set this parameter to true
+    bool isCustomFeedback = false,
+
+    // If you want to set custom child at the time of drag then set this parameter to true
+    bool isCustomChildWhenDragging = false,
+
+    // onWillAccept determine whether the drag object will accept or not. Based on that return a bool.
+    @required Function onWillAccept,
+    Function onWillAcceptHeader,
+    @required IndexedWidgetBuilder itemBuilderHeader,
+    bool allHeaderChildNonDraggable = false,
+    SliverGridDelegate headerGridDelegate,
+
+    // This method onReorder has two parameters oldIndex and newIndex
+    @required Function onReorder,
+    Function onReorderHeader,
+    int headerItemCount,
+    EdgeInsetsGeometry headerPadding,
+    EdgeInsetsGeometry padding,
+    @required SliverGridDelegate gridDelegate,
+    @required IndexedWidgetBuilder itemBuilder,
+    int itemCount,
+    bool addAutomaticKeepAlives = true,
+    bool addRepaintBoundaries = true,
+    bool addSemanticIndexes = true,
+    double cacheExtent,
+    int semanticChildCount,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
+    // set you feedback child here and to get this working please set isCustomFeedback to true
+    Function feedback,
+    // set you custom child here and to get this working please set isCustomChildWhenDragging to true
+    Function childWhenDragging,
+  })  : assert(itemBuilder != null &&
+            gridDelegate != null &&
+            onReorder != null &&
+            onWillAccept != null &&
+            itemBuilderHeader != null),
+        super(
+            key: key,
+            reverse: reverse,
+            itemBuilder: itemBuilder,
+            onWillAccept: onWillAccept,
+            feedback: feedback,
+            onReorder: onReorder,
+            onReorderHeader: onReorderHeader,
+            onWillAcceptHeader: onWillAcceptHeader,
+            childWhenDragging: childWhenDragging,
+            controller: controller,
+            padding: padding,
+            semanticChildCount: semanticChildCount,
+            physics: physics,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
+            addSemanticIndexes: addSemanticIndexes,
+            cacheExtent: cacheExtent,
+            itemCount: itemCount,
+            primary: primary,
+            isCustomFeedback: isCustomFeedback,
+            isCustomChildWhenDragging: isCustomChildWhenDragging,
+            gridDelegate: gridDelegate,
+            dragStartBehavior: dragStartBehavior,
+            keyboardDismissBehavior: keyboardDismissBehavior,
+            itemBuilderHeader: itemBuilderHeader,
+            isStickyHeader: true,
+            allHeaderChildNonDraggable: allHeaderChildNonDraggable,
+            headerPadding: headerPadding,
+            headerGridDelegate: headerGridDelegate,
+            headerItemCount: headerItemCount,
+            isVertical: false);
 }

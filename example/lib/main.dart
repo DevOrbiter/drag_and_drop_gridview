@@ -27,13 +27,13 @@ class _MyAppState extends State<MyApp> {
     "https://images.pexels.com/photos/2589010/pexels-photo-2589010.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
   ];
 
-  int variableSet = 0,variableSetHeader = 0;
+  int variableSet = 0, variableSetHeader = 0;
   ScrollController _scrollController;
   double width;
   double height;
   double widthHeader;
   double heightHeader;
-  List<String> listOfHeader = ["1","2"];
+  List<String> listOfHeader = ["1", "2"];
 
   @override
   void initState() {
@@ -78,9 +78,7 @@ class _MyAppState extends State<MyApp> {
               var temp = listOfHeader[oldIndex];
               listOfHeader[oldIndex] = listOfHeader[newIndex];
               listOfHeader[newIndex] = temp;
-              setState(() {
-                
-              });
+              setState(() {});
             },
             onWillAcceptHeader: (oldIndex, newIndex) {
               return true;

@@ -175,7 +175,9 @@ class _MainGridViewState extends State<MainGridView> {
         childWhenDragging: widget.isCustomChildWhenDragging
             ? widget.childWhenDragging(pos)
             : mainWidget,
-        axis: isFromArrange ? Axis.horizontal : null,
+        axis: isFromArrange
+            ? widget.isVertical ? Axis.horizontal : Axis.vertical
+            : null,
         onDragStarted: () {
           setState(() {
             _isDragStart = true;
@@ -210,6 +212,43 @@ class _MainGridViewState extends State<MainGridView> {
     );
   }
 
+  Widget _tableBuilderHorizontal() {
+    return Row(
+      children: [
+        NotificationListener<OverscrollIndicatorNotification>(
+          onNotification: (overscroll) {
+            overscroll.disallowGlow();
+            return true;
+          },
+          child: GridView.builder(
+            shrinkWrap: true,
+            padding: widget.headerPadding,
+            gridDelegate: widget.headerGridDelegate ?? widget.gridDelegate,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, pos) {
+              var mainWidget = widget.itemBuilderHeader(context, pos);
+              if (widget.allHeaderChildNonDraggable) {
+                return mainWidget;
+              }
+              if (mainWidget is DragItem) {
+                if (mainWidget.isDraggable) {
+                  return mainWidget;
+                }
+                print("${mainWidget.key} *************");
+              }
+
+              return _gridChild(mainWidget, pos, isFromArrange: true);
+            },
+            itemCount: widget.headerItemCount,
+          ),
+        ),
+        Expanded(
+          child: _dragAndDropGrid(),
+        ),
+      ],
+    );
+  }
+
   Widget _tableBuilder() {
     return Column(
       children: [
@@ -221,7 +260,6 @@ class _MainGridViewState extends State<MainGridView> {
           child: GridView.builder(
             shrinkWrap: true,
             padding: widget.headerPadding,
-            physics: ScrollPhysics(),
             gridDelegate: widget.headerGridDelegate ?? widget.gridDelegate,
             itemBuilder: (context, pos) {
               var mainWidget = widget.itemBuilderHeader(context, pos);
@@ -256,7 +294,7 @@ class _MainGridViewState extends State<MainGridView> {
           _gridViewWidth = constraints.maxWidth;
           print("$_gridViewHeight +  hhhhhhh");
           return widget.isStickyHeader
-              ? _tableBuilder()
+              ? widget.isVertical ? _tableBuilder() : _tableBuilderHorizontal()
               : widget.header == null ? _dragAndDropGrid() : _headerChild();
         }),
         !_isDragStart
