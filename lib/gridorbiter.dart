@@ -167,9 +167,9 @@ class _MainGridViewState extends State<MainGridView> {
 
   Widget _gridChild(Widget mainWidget, int pos, {bool isFromArrange = false}) {
     return DragTarget(
-      builder: (context, List<int> candidateData, rejectedData) =>
+      builder: (context, List<String> candidateData, rejectedData) =>
           LongPressDraggable(
-        data: pos,
+        data: isFromArrange ? "h$pos" : "$pos",
         child: mainWidget,
         feedback: widget.isCustomFeedback ? widget.feedback(pos) : mainWidget,
         childWhenDragging: widget.isCustomChildWhenDragging
@@ -187,14 +187,25 @@ class _MainGridViewState extends State<MainGridView> {
           });
         },
       ),
-      onWillAccept: (data) => isFromArrange
-          ? widget.onWillAcceptHeader(data, pos)
-          : widget.onWillAccept(data, pos),
+      onWillAccept: (data) {
+        //   print("${int.parse(data) + 1} +++++++++++++++++ $isFromArrange");
+        if (!isFromArrange) {
+          return widget.onWillAccept(int.parse(data), pos);
+        }
+        return data.toString().contains("h")
+            ? widget.onWillAcceptHeader(
+                int.parse(data.toString().replaceAll("h", "")), pos)
+            : false;
+      },
       onAccept: (data) {
-        if (isFromArrange)
-          widget.onReorderHeader(data, pos);
-        else
-          widget.onReorder(data, pos);
+        print("hello ${data}");
+        if (isFromArrange) {
+          if (data.toString().contains("h")) {
+            widget.onReorderHeader(
+                int.parse(data.toString().replaceAll("h", "")), pos);
+          }
+        } else
+          widget.onReorder(int.parse(data), pos);
       },
     );
   }
@@ -255,8 +266,9 @@ class _MainGridViewState extends State<MainGridView> {
                     ? Alignment.topCenter
                     : Alignment.centerRight,
                 child: DragTarget(
-                  builder: (context, List<int> candidateData, rejectedData) =>
-                      Container(
+                  builder:
+                      (context, List<String> candidateData, rejectedData) =>
+                          Container(
                     height: widget.isVertical ? 20 : double.infinity,
                     width: widget.isVertical ? double.infinity : 20,
                     color: Colors.transparent,
@@ -279,8 +291,9 @@ class _MainGridViewState extends State<MainGridView> {
                     ? Alignment.bottomCenter
                     : Alignment.centerLeft,
                 child: DragTarget(
-                  builder: (context, List<int> candidateData, rejectedData) =>
-                      Container(
+                  builder:
+                      (context, List<String> candidateData, rejectedData) =>
+                          Container(
                     height: widget.isVertical ? 20 : double.infinity,
                     width: widget.isVertical ? double.infinity : 20,
                     color: Colors.transparent,
