@@ -1,5 +1,4 @@
 import 'package:drag_and_drop_gridview/devdrag.dart';
-import 'package:drag_and_drop_gridview/drag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:async';
@@ -27,13 +26,10 @@ class _MyAppState extends State<MyApp> {
     "https://images.pexels.com/photos/2589010/pexels-photo-2589010.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
   ];
 
-  int variableSet = 0, variableSetHeader = 0;
+  int variableSet = 0;
   ScrollController _scrollController;
   double width;
   double height;
-  double widthHeader;
-  double heightHeader;
-  List<String> listOfHeader = ["1", "2"];
 
   @override
   void initState() {
@@ -45,93 +41,51 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('DragAndDropGridView'),
+          title: const Text('Drag And drop Plugin'),
         ),
         body: Center(
-          child: DragAndDropGridView.stickyHeader(
-            itemBuilderHeader: (context, pos) => Card(
-              elevation: 2,
-              child: LayoutBuilder(builder: (context, costrains) {
-                if (variableSet == 0) {
-                  heightHeader = costrains.maxHeight;
-                  widthHeader = costrains.maxWidth;
-                  variableSetHeader++;
-                }
-                return Container(
-                  height: heightHeader,
-                  width: widthHeader,
-                  alignment: Alignment.center,
-                  child: Text(
-                    "${listOfHeader[pos]}",
-                    textAlign: TextAlign.center,
-                  ),
-                );
-              }),
-            ),
-            headerItemCount: 2,
-            headerPadding: EdgeInsets.all(20),
-            headerGridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 2.8,
-            ),
-            onReorderHeader: (oldIndex, newIndex) {
-              var temp = listOfHeader[oldIndex];
-              listOfHeader[oldIndex] = listOfHeader[newIndex];
-              listOfHeader[newIndex] = temp;
-              setState(() {});
-            },
-            onWillAcceptHeader: (oldIndex, newIndex) {
-              return true;
-            },
+          child: DragAndDropGridView(
             controller: _scrollController,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               childAspectRatio: 3 / 4.5,
             ),
             padding: EdgeInsets.all(20),
-            itemBuilder: (context, index) => DragItem(
-              child: Card(
-                elevation: 2,
-                child: LayoutBuilder(builder: (context, costrains) {
+            itemBuilder: (context, index) => Card(
+              elevation: 2,
+              child: LayoutBuilder(
+                builder: (context, costrains) {
                   if (variableSet == 0) {
                     height = costrains.maxHeight;
                     width = costrains.maxWidth;
                     variableSet++;
                   }
                   return GridTile(
-                    key: index == 4 ? Key("12") : null,
                     child: Image.network(
                       _imageUris[index],
+                      fit: BoxFit.cover,
                       height: height,
                       width: width,
                     ),
                   );
-                }),
+                },
               ),
             ),
             itemCount: _imageUris.length,
-            onWillAccept: (oldIndex, newIndex) => true,
-            onReorder: (oldIndex, newIndex) {
-              int indexOfFirstItem = _imageUris.indexOf(_imageUris[oldIndex]);
-              int indexOfSecondItem = _imageUris.indexOf(_imageUris[newIndex]);
+            onWillAccept: (oldIndex, newIndex) {
+              // Implement you own logic
 
-              if (indexOfFirstItem > indexOfSecondItem) {
-                for (int i = _imageUris.indexOf(_imageUris[oldIndex]);
-                    i > _imageUris.indexOf(_imageUris[newIndex]);
-                    i--) {
-                  var tmp = _imageUris[i - 1];
-                  _imageUris[i - 1] = _imageUris[i];
-                  _imageUris[i] = tmp;
-                }
-              } else {
-                for (int i = _imageUris.indexOf(_imageUris[oldIndex]);
-                    i < _imageUris.indexOf(_imageUris[newIndex]);
-                    i++) {
-                  var tmp = _imageUris[i + 1];
-                  _imageUris[i + 1] = _imageUris[i];
-                  _imageUris[i] = tmp;
-                }
+              // Example reject the reorder if the moving item's value is something specific
+              if (_imageUris[newIndex] == "something") {
+                return false;
               }
+              return true; // If you want to accept the child return true or else return false
+            },
+            onReorder: (oldIndex, newIndex) {
+              final temp = _imageUris[oldIndex];
+              _imageUris[oldIndex] = _imageUris[newIndex];
+              _imageUris[newIndex] = temp;
+
               setState(() {});
             },
           ),
