@@ -156,7 +156,6 @@ class _MainGridViewState extends State<MainGridView> {
           if (mainWidget.isDraggable) {
             return mainWidget;
           }
-          print("${mainWidget.key} *************");
         }
 
         return _gridChild(mainWidget, pos);
@@ -190,7 +189,6 @@ class _MainGridViewState extends State<MainGridView> {
         },
       ),
       onWillAccept: (data) {
-        //   print("${int.parse(data) + 1} +++++++++++++++++ $isFromArrange");
         if (!isFromArrange) {
           return widget.onWillAccept(int.parse(data), pos);
         }
@@ -200,7 +198,6 @@ class _MainGridViewState extends State<MainGridView> {
             : false;
       },
       onAccept: (data) {
-        print("hello ${data}");
         if (isFromArrange) {
           if (data.toString().contains("h")) {
             widget.onReorderHeader(
@@ -234,7 +231,6 @@ class _MainGridViewState extends State<MainGridView> {
                 if (mainWidget.isDraggable) {
                   return mainWidget;
                 }
-                print("${mainWidget.key} *************");
               }
 
               return _gridChild(mainWidget, pos, isFromArrange: true);
@@ -270,7 +266,6 @@ class _MainGridViewState extends State<MainGridView> {
                 if (mainWidget.isDraggable) {
                   return mainWidget;
                 }
-                print("${mainWidget.key} *************");
               }
 
               return _gridChild(mainWidget, pos, isFromArrange: true);
@@ -292,7 +287,6 @@ class _MainGridViewState extends State<MainGridView> {
         LayoutBuilder(builder: (context, constraints) {
           _gridViewHeight = constraints.maxHeight;
           _gridViewWidth = constraints.maxWidth;
-          print("$_gridViewHeight +  hhhhhhh");
           return widget.isStickyHeader
               ? widget.isVertical ? _tableBuilder() : _tableBuilderHorizontal()
               : widget.header == null ? _dragAndDropGrid() : _headerChild();
@@ -312,7 +306,6 @@ class _MainGridViewState extends State<MainGridView> {
                     color: Colors.transparent,
                   ),
                   onWillAccept: (data) {
-                    print("helo down");
                     if (!widget.isVertical) {
                       _moveRight();
                       return false;
@@ -337,7 +330,6 @@ class _MainGridViewState extends State<MainGridView> {
                     color: Colors.transparent,
                   ),
                   onWillAccept: (data) {
-                    print("helo down");
                     if (!widget.isVertical) {
                       _moveLeft();
                       return false;

@@ -1,3 +1,7 @@
+## [1.0.6] - Aug 21, 2020.
+
+* fix small bug
+
 ## [1.0.5] - Aug 21, 2020.
 
 * Add Sticky header
