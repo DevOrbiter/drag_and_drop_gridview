@@ -1,8 +1,3 @@
-
-
-
-  
-
 # drag_and_drop_gridview
 [![pub package](https://img.shields.io/pub/v/drag_and_drop_gridview?style=plastic)](https://pub.dartlang.org/packages/drag_and_drop_gridview)
 [![Awesome Flutter](https://img.shields.io/badge/Awesome-Flutter-blue.svg?longCache=true&style=flat-square)](https://github.com/Solido/awesome-flutter)
@@ -744,9 +739,14 @@ DrarItem(
 ---
 
 ### Example#7: Sticky header horizontal gridview
-To achive the sticky header in gridview just call this `horizontalStickyHeader` constructor and pass the extra params if you not pass `allHeaderChildNonDraggable` true.
+To achive the sticky header in gridview just call this `horizontalStickyHeader` constructor. 
+By Default `allHeaderChildNonDraggable` is set to **false** making all header **draggable**.
 
-`onWillAcceptHeader`, `onReorderHeader`
+`onWillAcceptHeader` (Implement your logic on accepting and rejecting the drop of an header element),
+
+ `onReorderHeader` (implement your logic for reodering and reindexing the elements)
+
+And if you want the header to be **non-draggable** element simple set `allHeaderChildNonDraggable` to **true**.
 
 and required parameters are: 
 `onWillAccept`, `itemBuilderHeader`, `onReorder`, `gridDelegate`, `itemBuilder`
@@ -904,17 +904,18 @@ class _MyAppState extends State<MyApp> {
 ---
 
 ### Example#8: Sticky header virtical gridview
-To achive the sticky header in gridview just call this `stickyHeader` constructor and pass the extra params if you not pass `allHeaderChildNonDraggable` true.
+To achive the sticky header in gridview just call this `stickyHeader` constructor. 
 
-`onWillAcceptHeader`,
-`onReorderHeader`
+By Default `allHeaderChildNonDraggable` is set to **false** making all header **draggable**.
 
-and required params are
-`onWillAccept`,
-`itemBuilderHeader`,
-`onReorder`,
-`gridDelegate`,
-`itemBuilder`
+`onWillAcceptHeader` (Implement your logic on accepting and rejecting the drop of an header element),
+
+ `onReorderHeader` (implement your logic for reodering and reindexing the elements)
+
+And if you want the header to be **non-draggable** element simple set `allHeaderChildNonDraggable` to **true**.
+
+and required parameters are: 
+`onWillAccept`, `itemBuilderHeader`, `onReorder`, `gridDelegate`, `itemBuilder`
 
 ```dart
 
