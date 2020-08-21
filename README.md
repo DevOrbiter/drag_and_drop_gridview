@@ -1,5 +1,6 @@
 
 
+
   
 
 # drag_and_drop_gridview
@@ -78,7 +79,7 @@ onReorder: (oldIndex, newIndex) {
         setState(() {});
 },
 ```
-#### Example
+### Example
 ```dart
  _animals = ['cat','dog','kitten','puppy']
  
@@ -217,11 +218,12 @@ class _MyAppState extends State<MyApp> {
 ```
 #### Result:
 <img src="https://github.com/DevOrbiter/drag_and_drop_gridview/blob/master/example/gifs/drag_and_drop_grid.gif?raw=true" width="240" title="DragAndDropGridView">
+
 ---
 
 ### Example #2 : DragAndDropGridView Horizontal (Reorderable)
 
-This is the example of how you can achive the **Horizontal** **Reorderable / Re-Indexing** feature in DragAndDropGridView. Just use `horizontal` constructor.
+This is the example of how you can achive the **Horizontal Reorderable / Re-Indexing** feature in DragAndDropGridView. Just use `horizontal` constructor.
 
 ```dart
 import 'package:drag_and_drop_gridview/devdrag.dart';
@@ -268,7 +270,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('DragAndDropGridView'),
+          title: const Text('Horizontal DragAndDropGridView'),
         ),
         body: Center(
           child: DragAndDropGridView.horizontal(
@@ -336,9 +338,9 @@ class _MyAppState extends State<MyApp> {
 ---
 
 
-### Example #2 : DragAndDropGridView (Reorderable)
+### Example #3 : DragAndDropGridView Vertical (Reorderable)
 
-This is the example of how you can achive the **Reorderable / Re-Indexing** feature in DragAndDropGridView.
+This is the example of how you can achive the **Vertical Reorderable / Re-Indexing** feature in DragAndDropGridView.
 
 ``` dart
 import 'package:drag_and_drop_gridview/devdrag.dart';
@@ -384,7 +386,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Drag And drop Plugging'),
+          title: const Text('Vertical Drag And drop Plugin'),
         ),
         body: Center(
           child: DragAndDropGridView(
@@ -454,7 +456,7 @@ class _MyAppState extends State<MyApp> {
 
 ---
 
-### DragAndDropGridView with hover effect (Reorderable)
+### Example #4: DragAndDropGridView with hover effect (Reorderable)
 
 This is the example of how you can achive the **Reordering Effect While Hovering Over A Specific Index** feature in DragAndDropGridView.
 
@@ -507,7 +509,7 @@ class _MyAppState extends State<MyApp> {
    return MaterialApp(
      home: Scaffold(
        appBar: AppBar(
-         title: const Text('DragAndDropGridView'),
+         title: const Text('Vertical DragAndDropGridView Hover Effect'),
        ),
        body: Center(
          child: DragAndDropGridView(
@@ -613,8 +615,10 @@ class _MyAppState extends State<MyApp> {
 
 ---
 
-#### DragAndDropGridView Non Sticky Header 
-In this example you can add non sticky header. but if you pass any vertical scrollview don't forgot to add shrinkwrap or wrap the widget in expanded to avoid error.
+### Example #5: DragAndDropGridView Non Sticky Header 
+In this example you can add a non sticky header. 
+
+But if you pass any vertical scrollview don't forgot to add shrinkwrap or wrap the widget in expanded to avoid error.
 
 ```dart
 import 'package:drag_and_drop_gridview/devdrag.dart';
@@ -728,29 +732,24 @@ class _MyAppState extends State<MyApp> {
 
 ---
 
-### Want to achive non draggable child in some cell??
-Just wrap the widget in `DragItem` and return `isDraggable` true or false acording to your condition.
+### Example #6: DragAndDrop GridView with non-draggable child
+In the itembuilder just wrap your widget in `DragItem` and return `isDraggable` true or false acording to your condition.
 
 ```dart
 DrarItem(
-    isDraggable: true, // wheater draggable or not
+    isDraggable: true, // whether draggable or not
     child: ..///, //and pass the child
 );
 ```
+---
 
-
-#### Sticky header horizontal gridview
+### Example#7: Sticky header horizontal gridview
 To achive the sticky header in gridview just call this `horizontalStickyHeader` constructor and pass the extra params if you not pass `allHeaderChildNonDraggable` true.
 
-`onWillAcceptHeader`,
-`onReorderHeader`
+`onWillAcceptHeader`, `onReorderHeader`
 
-and required params are
-`onWillAccept`,
-`itemBuilderHeader`,
-`onReorder`,
-`gridDelegate`,
-`itemBuilder`
+and required parameters are: 
+`onWillAccept`, `itemBuilderHeader`, `onReorder`, `gridDelegate`, `itemBuilder`
 
 ```dart
 import 'package:drag_and_drop_gridview/devdrag.dart';
@@ -904,7 +903,7 @@ class _MyAppState extends State<MyApp> {
 
 ---
 
-#### Sticky header gridview
+### Example#8: Sticky header virtical gridview
 To achive the sticky header in gridview just call this `stickyHeader` constructor and pass the extra params if you not pass `allHeaderChildNonDraggable` true.
 
 `onWillAcceptHeader`,
@@ -1070,7 +1069,7 @@ class _MyAppState extends State<MyApp> {
 ---
 
 
-#### DragAndDropGridView change child
+### Example #9: DragAndDropGridView change child
 
 You can change the child by set the `isCustomChildWhenDragging` to true and return your child to this parameter `childWhenDragging`.
 
@@ -1176,7 +1175,7 @@ class _MyAppState extends State<MyApp> {
 <img src="https://github.com/DevOrbiter/drag_and_drop_gridview/blob/master/example/gifs/childwhendrag.gif?raw=true" width="240" title="ReorderableDragAndDropGridViewChildChange">
 
 ---
-#### DragAndDropGridView change feedback
+### Example #10: DragAndDropGridView change feedback
 
 You can change the child by set the `isCustomFeedback` to true and return your child to this parameter `feedback`.
 
