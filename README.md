@@ -6,6 +6,7 @@
 [![pub package](https://img.shields.io/pub/v/drag_and_drop_gridview?style=plastic)](https://pub.dartlang.org/packages/drag_and_drop_gridview)
 [![Awesome Flutter](https://img.shields.io/badge/Awesome-Flutter-blue.svg?longCache=true&style=flat-square)](https://github.com/Solido/awesome-flutter)
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-yellow.svg)](https://www.buymeacoffee.com/devorbiter) 
+
 Drag And Drop GridView extends the functionality of the GridView widget in Flutter and gives you the freedom of creating a reorder the GridViewItems simple by Drag And Drop. It is super easy to implement and beautiful to use.
 
 If you appreciate the content 📖, support projects visibility, give 👍| ⭐| 👏
@@ -32,12 +33,12 @@ import 'package:drag_and_drop_gridview/devdrag.dart';
 
 ### Overview
 
-DragAndDropGridView has the all same parameters that GridView.builder [constructor]([https://api.flutter.dev/flutter/widgets/GridView/GridView.builder.html](https://api.flutter.dev/flutter/widgets/GridView/GridView.builder.html)) has. 
+DragAndDropGridView has the all same parameters that GridView.builder [constructor](https://api.flutter.dev/flutter/widgets/GridView/GridView.builder.html) has. 
 
 But in DragAndDropGridView there are some required params `gridDelegate`, `itemBuilder`, `onWillAccept`, and `onReorder`.
 
 #### gridDelegate 
-This is the same as we find it in the official gridview of Flutter. [Learn More]([https://api.flutter.dev/flutter/widgets/GridView/gridDelegate.html](https://api.flutter.dev/flutter/widgets/GridView/gridDelegate.html))
+This is the same as we find it in the official gridview of Flutter. [Learn More](https://api.flutter.dev/flutter/widgets/GridView/gridDelegate.html)
 ```dart
 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
@@ -45,7 +46,7 @@ gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
      ),
 ```
 #### itemBuilder
-This is the same as we find it in the official gridview of Flutter. [Learn More]([https://api.flutter.dev/flutter/widgets/GridView/GridView.builder.html](https://api.flutter.dev/flutter/widgets/GridView/GridView.builder.html))
+This is the same as we find it in the official gridview of Flutter. [Learn More](https://api.flutter.dev/flutter/widgets/GridView/GridView.builder.html)
 ```dart
 itemBuilder: (context, index) => Card(
        elevation: 2,
@@ -96,16 +97,16 @@ DragAndDropGridView(
     onWillAccept: (oldIndex, newIndex) {
 		// Implement you own logic
 
-		// Example reject the reorder if the moving item's value is "kitten" 
+		// Example reject the reorder if the moving item's destination value is cat"
 		if (_animals[newIndex] == "cat"){
 			return false;
 		}
 		return true, // If you want to accept the child return true or else return false
 	},
     onReorder: (oldIndex, newIndex) {
-	    _temp = _imageUris[newIndex];
-        _imageUris[newIndex] = _imageUris[oldIndex];
-        _imageUris[oldIndex] = _temp;
+	    _temp = _animals[newIndex];
+        _animals[newIndex] = _animals[oldIndex];
+        _animals[oldIndex] = _temp;
         setState(() {});
     },
 )
