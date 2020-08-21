@@ -1,3 +1,4 @@
+
 # drag_and_drop_gridview
 [![pub package](https://img.shields.io/pub/v/drag_and_drop_gridview?style=plastic)](https://pub.dartlang.org/packages/drag_and_drop_gridview)
 [![Awesome Flutter](https://img.shields.io/badge/Awesome-Flutter-blue.svg?longCache=true&style=flat-square)](https://github.com/Solido/awesome-flutter)
@@ -12,7 +13,7 @@ If you appreciate the content 📖, support projects visibility, give 👍| ⭐|
 To use this [package](https://pub.dev/packages/drag_and_drop_gridview), add `drag_and_drop_gridview` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
 ```
 dependencies:
-  drag_and_drop_gridview: ^1.0.4
+  drag_and_drop_gridview: ^1.0.5
 ```
 And import the package in your code.
 ``` dart
@@ -25,11 +26,14 @@ import 'package:drag_and_drop_gridview/devdrag.dart';
 <img src="https://github.com/DevOrbiter/drag_and_drop_gridview/blob/master/example/gifs/drag_and_drop_grid.gif?raw=true" width="180" title="DragAndDropGridView">
 <img src="https://github.com/DevOrbiter/drag_and_drop_gridview/blob/master/example/gifs/drag_drop_reorderable.gif?raw=true" width="180" title="ReorderableDragAndDropGridView">
 <img src="https://github.com/DevOrbiter/drag_and_drop_gridview/blob/master/example/gifs/reorderablehover.gif?raw=true" width="180" title="ReorderableDragAndDropGridView">
+<img src="https://github.com/DevOrbiter/drag_and_drop_gridview/blob/master/example/gifs/stickhorheader.gif?raw=true" width="180" title="ReorderableDragAndDropGridViewHover">
+<img src="https://github.com/DevOrbiter/drag_and_drop_gridview/blob/master/example/gifs/horgrid.gif?raw=true" width="180" title="DragAndDropGridView">
+<img src="https://github.com/DevOrbiter/drag_and_drop_gridview/blob/master/example/gifs/stickheader.gif?raw=true" width="180" title="ReorderableDragAndDropGridViewHover">
 </p>
 
 ### Overview
 
-DragAndDropGridView has the all same parameters that GridView.builder [constructor](https://api.flutter.dev/flutter/widgets/GridView/GridView.builder.html) has. 
+DragAndDropGridView has the all same parameters (except `shrinkWrap` and `scrollDirection`) that GridView.builder [constructor](https://api.flutter.dev/flutter/widgets/GridView/GridView.builder.html) has. 
 
 But in DragAndDropGridView there are some required params `gridDelegate`, `itemBuilder`, `onWillAccept`, and `onReorder`.
 
@@ -752,6 +756,7 @@ and required parameters are:
 `onWillAccept`, `itemBuilderHeader`, `onReorder`, `gridDelegate`, `itemBuilder`
 
 ```dart
+
 import 'package:drag_and_drop_gridview/devdrag.dart';
 import 'package:drag_and_drop_gridview/drag.dart';
 import 'package:flutter/material.dart';
@@ -778,7 +783,16 @@ class _MyAppState extends State<MyApp> {
     "https://images.pexels.com/photos/1053924/pexels-photo-1053924.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
     "https://images.pexels.com/photos/1624438/pexels-photo-1624438.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
     "https://images.pexels.com/photos/1144687/pexels-photo-1144687.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-    "https://images.pexels.com/photos/2589010/pexels-photo-2589010.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+    "https://images.pexels.com/photos/2589010/pexels-photo-2589010.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+
+
+    "https://images.pexels.com/photos/443446/pexels-photo-443446.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    "https://images.pexels.com/photos/2113566/pexels-photo-2113566.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    "https://images.pexels.com/photos/3244513/pexels-photo-3244513.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    "https://images.pexels.com/photos/1438761/pexels-photo-1438761.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    "https://images.pexels.com/photos/2835562/pexels-photo-2835562.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    "https://images.pexels.com/photos/2440021/pexels-photo-2440021.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    "https://images.pexels.com/photos/572897/pexels-photo-572897.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
   ];
 
   int variableSet = 0, variableSetHeader = 0;

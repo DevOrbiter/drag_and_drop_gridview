@@ -1,3 +1,11 @@
+## [1.0.5] - Aug 21, 2020.
+
+* Add Sticky header
+* Introduced DragItem widget
+* Add horizontal grid view
+* fix small bugs
+* Updated README.md.
+
 ## [1.0.4] - Aug 16, 2020.
 
 * Updated README.md.
