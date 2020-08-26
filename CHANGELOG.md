@@ -1,3 +1,7 @@
+## [1.0.7] - Aug 26, 2020.
+
+* fix dragitem bug
+
 ## [1.0.6] - Aug 21, 2020.
 
 * fix small bug

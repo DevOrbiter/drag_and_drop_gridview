@@ -153,7 +153,7 @@ class _MainGridViewState extends State<MainGridView> {
       itemBuilder: (context, pos) {
         var mainWidget = widget.itemBuilder(context, pos);
         if (mainWidget is DragItem) {
-          if (mainWidget.isDraggable) {
+          if (!mainWidget.isDraggable) {
             return mainWidget;
           }
         }
@@ -228,7 +228,7 @@ class _MainGridViewState extends State<MainGridView> {
                 return mainWidget;
               }
               if (mainWidget is DragItem) {
-                if (mainWidget.isDraggable) {
+                if (!mainWidget.isDraggable) {
                   return mainWidget;
                 }
               }
@@ -263,7 +263,7 @@ class _MainGridViewState extends State<MainGridView> {
                 return mainWidget;
               }
               if (mainWidget is DragItem) {
-                if (mainWidget.isDraggable) {
+                if (!mainWidget.isDraggable) {
                   return mainWidget;
                 }
               }
