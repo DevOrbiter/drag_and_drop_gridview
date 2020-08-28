@@ -154,7 +154,10 @@ class _MainGridViewState extends State<MainGridView> {
         var mainWidget = widget.itemBuilder(context, pos);
         if (mainWidget is DragItem) {
           if (!mainWidget.isDraggable) {
-            return mainWidget;
+            if (!mainWidget.isDropable) {
+              return mainWidget;
+            }
+            return _gridChild(mainWidget, pos, isNonDraggable: true);
           }
         }
 
@@ -164,32 +167,16 @@ class _MainGridViewState extends State<MainGridView> {
     );
   }
 
-  Widget _gridChild(Widget mainWidget, int pos, {bool isFromArrange = false}) {
+  Widget _gridChild(Widget mainWidget, int pos,
+      {bool isFromArrangeP = false, bool isNonDraggable = false}) {
     return DragTarget(
       builder: (context, List<String> candidateData, rejectedData) =>
-          LongPressDraggable(
-        data: isFromArrange ? "h$pos" : "$pos",
-        child: mainWidget,
-        feedback: widget.isCustomFeedback ? widget.feedback(pos) : mainWidget,
-        childWhenDragging: widget.isCustomChildWhenDragging
-            ? widget.childWhenDragging(pos)
-            : mainWidget,
-        axis: isFromArrange
-            ? widget.isVertical ? Axis.horizontal : Axis.vertical
-            : null,
-        onDragStarted: () {
-          setState(() {
-            _isDragStart = true;
-          });
-        },
-        onDragCompleted: () {
-          setState(() {
-            _isDragStart = false;
-          });
-        },
-      ),
+          isNonDraggable
+              ? mainWidget
+              : _dragItemBuilder(mainWidget, pos,
+                  isFromArrange: isFromArrangeP),
       onWillAccept: (data) {
-        if (!isFromArrange) {
+        if (!isFromArrangeP) {
           return widget.onWillAccept(int.parse(data), pos);
         }
         return data.toString().contains("h")
@@ -198,13 +185,38 @@ class _MainGridViewState extends State<MainGridView> {
             : false;
       },
       onAccept: (data) {
-        if (isFromArrange) {
+        if (isFromArrangeP) {
           if (data.toString().contains("h")) {
             widget.onReorderHeader(
                 int.parse(data.toString().replaceAll("h", "")), pos);
           }
         } else
           widget.onReorder(int.parse(data), pos);
+      },
+    );
+  }
+
+  Widget _dragItemBuilder(Widget mainWidget, int pos,
+      {bool isFromArrange = false}) {
+    return LongPressDraggable(
+      data: isFromArrange ? "h$pos" : "$pos",
+      child: mainWidget,
+      feedback: widget.isCustomFeedback ? widget.feedback(pos) : mainWidget,
+      childWhenDragging: widget.isCustomChildWhenDragging
+          ? widget.childWhenDragging(pos)
+          : mainWidget,
+      axis: isFromArrange
+          ? widget.isVertical ? Axis.horizontal : Axis.vertical
+          : null,
+      onDragStarted: () {
+        setState(() {
+          _isDragStart = true;
+        });
+      },
+      onDragCompleted: () {
+        setState(() {
+          _isDragStart = false;
+        });
       },
     );
   }
@@ -229,11 +241,15 @@ class _MainGridViewState extends State<MainGridView> {
               }
               if (mainWidget is DragItem) {
                 if (!mainWidget.isDraggable) {
-                  return mainWidget;
+                  if (!mainWidget.isDropable) {
+                    return mainWidget;
+                  }
+                  return _gridChild(mainWidget, pos,
+                      isFromArrangeP: true, isNonDraggable: true);
                 }
               }
 
-              return _gridChild(mainWidget, pos, isFromArrange: true);
+              return _gridChild(mainWidget, pos, isFromArrangeP: true);
             },
             itemCount: widget.headerItemCount,
           ),
@@ -264,11 +280,15 @@ class _MainGridViewState extends State<MainGridView> {
               }
               if (mainWidget is DragItem) {
                 if (!mainWidget.isDraggable) {
-                  return mainWidget;
+                  if (!mainWidget.isDropable) {
+                    return mainWidget;
+                  }
+                  return _gridChild(mainWidget, pos,
+                      isFromArrangeP: true, isNonDraggable: true);
                 }
               }
 
-              return _gridChild(mainWidget, pos, isFromArrange: true);
+              return _gridChild(mainWidget, pos, isFromArrangeP: true);
             },
             itemCount: widget.headerItemCount,
           ),
