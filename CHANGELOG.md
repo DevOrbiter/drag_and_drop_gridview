@@ -1,3 +1,8 @@
+## [1.0.8] - Aug 26, 2020.
+
+* add isDropable in DragItem
+* Updated README.md.
+
 ## [1.0.7] - Aug 26, 2020.
 
 * fix dragitem bug

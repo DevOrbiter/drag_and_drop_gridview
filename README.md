@@ -13,7 +13,7 @@ If you appreciate the content 📖, support projects visibility, give 👍| ⭐|
 To use this [package](https://pub.dev/packages/drag_and_drop_gridview), add `drag_and_drop_gridview` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
 ```
 dependencies:
-  drag_and_drop_gridview: ^1.0.7
+  drag_and_drop_gridview: ^1.0.8
 ```
 And import the package in your code.
 ``` dart
@@ -734,9 +734,15 @@ class _MyAppState extends State<MyApp> {
 ### Example #6: DragAndDrop GridView with non-draggable child
 In the itembuilder just wrap your widget in `DragItem` and return `isDraggable` true or false acording to your condition.
 
+And in `isDropable` if you pass `false` then this item will not accept any draggable child. By default it is set to true `true`.
+
 ```dart
+
+import 'package:drag_and_drop_gridview/drag.dart'; // import this header
+
 DrarItem(
-    isDraggable: true, // whether draggable or not
+    isDraggable: true, // whether draggable or not (Default true)
+    isDropable: false, // whether dropable or not (Default true)
     child: ..///, //and pass the child
 );
 ```
