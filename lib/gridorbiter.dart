@@ -1,6 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
 import 'package:drag_and_drop_gridview/drag.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+
+typedef bool WillAcceptCallback(int data, int position);
+typedef Widget WidgetPositionBuilder(int index);
 
 class MainGridView extends StatefulWidget {
   MainGridView(
@@ -52,14 +55,14 @@ class MainGridView extends StatefulWidget {
   final bool isCustomChildWhenDragging;
 
   // onWillAccept determine whether the drag object will accept or not. Based on that return a bool.
-  final Function onWillAccept;
-  final Function onWillAcceptHeader;
+  final WillAcceptCallback onWillAccept;
+  final WillAcceptCallback onWillAcceptHeader;
   final bool allHeaderChildNonDraggable;
   final EdgeInsetsGeometry headerPadding;
 
   // This method onReorder has two parameters oldIndex and newIndex
-  final Function onReorder;
-  final Function onReorderHeader;
+  final ReorderCallback onReorder;
+  final ReorderCallback onReorderHeader;
 
   final EdgeInsetsGeometry padding;
   final int headerItemCount;
@@ -78,11 +81,11 @@ class MainGridView extends StatefulWidget {
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
   final bool isVertical;
 
-  // set you feedback child here and to get this working please set isCustomFeedback to true
-  final Function feedback;
+  /// set your feedback child here and to get this working please set isCustomFeedback to true
+  final WidgetPositionBuilder feedback;
 
-  // set you custom child here and to get this working please set isCustomChildWhenDragging to true
-  final Function childWhenDragging;
+  /// set your custom child here and to get this working please set isCustomChildWhenDragging to true
+  final WidgetPositionBuilder childWhenDragging;
 
   @override
   _MainGridViewState createState() => _MainGridViewState();
@@ -104,25 +107,17 @@ class _MainGridViewState extends State<MainGridView> {
     super.initState();
   }
 
-  _moveUp() {
-    _scrollController.animateTo(_scrollController.offset - _gridViewHeight,
-        curve: Curves.linear, duration: Duration(milliseconds: 500));
+  _moveTo(double offset) {
+    _scrollController.animateTo(offset, curve: Curves.linear, duration: Duration(milliseconds: 500));
   }
 
-  _moveDown() {
-    _scrollController.animateTo(_scrollController.offset + _gridViewHeight,
-        curve: Curves.linear, duration: Duration(milliseconds: 500));
-  }
+  _moveUp() => _moveTo(_scrollController.offset - _gridViewHeight);
 
-  _moveLeft() {
-    _scrollController.animateTo(_scrollController.offset - _gridViewWidth,
-        curve: Curves.linear, duration: Duration(milliseconds: 500));
-  }
+  _moveDown() => _moveTo(_scrollController.offset + _gridViewHeight);
 
-  _moveRight() {
-    _scrollController.animateTo(_scrollController.offset + _gridViewWidth,
-        curve: Curves.linear, duration: Duration(milliseconds: 500));
-  }
+  _moveLeft() => _moveTo(_scrollController.offset - _gridViewWidth);
+
+  _moveRight() => _moveTo(_scrollController.offset + _gridViewWidth);
 
   Widget _headerChild() {
     return ListView(
@@ -136,8 +131,7 @@ class _MainGridViewState extends State<MainGridView> {
       key: widget.key,
       reverse: widget.reverse,
       shrinkWrap: true,
-      controller:
-          widget.header == null ? _scrollController : _scrollController2,
+      controller: widget.header == null ? _scrollController : _scrollController2,
       padding: widget.padding,
       scrollDirection: widget.isVertical ? Axis.vertical : Axis.horizontal,
       semanticChildCount: widget.semanticChildCount,
@@ -167,28 +161,23 @@ class _MainGridViewState extends State<MainGridView> {
     );
   }
 
-  Widget _gridChild(Widget mainWidget, int pos,
-      {bool isFromArrangeP = false, bool isNonDraggable = false}) {
+  Widget _gridChild(Widget mainWidget, int pos, {bool isFromArrangeP = false, bool isNonDraggable = false}) {
     return DragTarget(
-      builder: (context, List<String> candidateData, rejectedData) =>
-          isNonDraggable
-              ? mainWidget
-              : _dragItemBuilder(mainWidget, pos,
-                  isFromArrange: isFromArrangeP),
+      builder: (context, List<String> candidateData, rejectedData) {
+        return isNonDraggable ? mainWidget : _dragItemBuilder(mainWidget, pos, isFromArrange: isFromArrangeP);
+      },
       onWillAccept: (data) {
         if (!isFromArrangeP) {
           return widget.onWillAccept(int.parse(data), pos);
         }
         return data.toString().contains("h")
-            ? widget.onWillAcceptHeader(
-                int.parse(data.toString().replaceAll("h", "")), pos)
+            ? widget.onWillAcceptHeader(int.parse(data.toString().replaceAll("h", "")), pos)
             : false;
       },
       onAccept: (data) {
         if (isFromArrangeP) {
           if (data.toString().contains("h")) {
-            widget.onReorderHeader(
-                int.parse(data.toString().replaceAll("h", "")), pos);
+            widget.onReorderHeader(int.parse(data.toString().replaceAll("h", "")), pos);
           }
         } else
           widget.onReorder(int.parse(data), pos);
@@ -196,28 +185,19 @@ class _MainGridViewState extends State<MainGridView> {
     );
   }
 
-  Widget _dragItemBuilder(Widget mainWidget, int pos,
-      {bool isFromArrange = false}) {
+  Widget _dragItemBuilder(Widget mainWidget, int pos, {bool isFromArrange = false}) {
     return LongPressDraggable(
       data: isFromArrange ? "h$pos" : "$pos",
       child: mainWidget,
       feedback: widget.isCustomFeedback ? widget.feedback(pos) : mainWidget,
-      childWhenDragging: widget.isCustomChildWhenDragging
-          ? widget.childWhenDragging(pos)
-          : mainWidget,
+      childWhenDragging: widget.isCustomChildWhenDragging ? widget.childWhenDragging(pos) : mainWidget,
       axis: isFromArrange
-          ? widget.isVertical ? Axis.horizontal : Axis.vertical
+          ? widget.isVertical
+              ? Axis.horizontal
+              : Axis.vertical
           : null,
-      onDragStarted: () {
-        setState(() {
-          _isDragStart = true;
-        });
-      },
-      onDragCompleted: () {
-        setState(() {
-          _isDragStart = false;
-        });
-      },
+      onDragStarted: () => setState(() => _isDragStart = true),
+      onDragCompleted: () => setState(() => _isDragStart = false),
     );
   }
 
@@ -225,8 +205,8 @@ class _MainGridViewState extends State<MainGridView> {
     return Row(
       children: [
         NotificationListener<OverscrollIndicatorNotification>(
-          onNotification: (overscroll) {
-            overscroll.disallowGlow();
+          onNotification: (overScroll) {
+            overScroll.disallowGlow();
             return true;
           },
           child: GridView.builder(
@@ -244,8 +224,7 @@ class _MainGridViewState extends State<MainGridView> {
                   if (!mainWidget.isDropable) {
                     return mainWidget;
                   }
-                  return _gridChild(mainWidget, pos,
-                      isFromArrangeP: true, isNonDraggable: true);
+                  return _gridChild(mainWidget, pos, isFromArrangeP: true, isNonDraggable: true);
                 }
               }
 
@@ -265,8 +244,8 @@ class _MainGridViewState extends State<MainGridView> {
     return Column(
       children: [
         NotificationListener<OverscrollIndicatorNotification>(
-          onNotification: (overscroll) {
-            overscroll.disallowGlow();
+          onNotification: (overScroll) {
+            overScroll.disallowGlow();
             return true;
           },
           child: GridView.builder(
@@ -283,8 +262,7 @@ class _MainGridViewState extends State<MainGridView> {
                   if (!mainWidget.isDropable) {
                     return mainWidget;
                   }
-                  return _gridChild(mainWidget, pos,
-                      isFromArrangeP: true, isNonDraggable: true);
+                  return _gridChild(mainWidget, pos, isFromArrangeP: true, isNonDraggable: true);
                 }
               }
 
@@ -308,19 +286,19 @@ class _MainGridViewState extends State<MainGridView> {
           _gridViewHeight = constraints.maxHeight;
           _gridViewWidth = constraints.maxWidth;
           return widget.isStickyHeader
-              ? widget.isVertical ? _tableBuilder() : _tableBuilderHorizontal()
-              : widget.header == null ? _dragAndDropGrid() : _headerChild();
+              ? widget.isVertical
+                  ? _tableBuilder()
+                  : _tableBuilderHorizontal()
+              : widget.header == null
+                  ? _dragAndDropGrid()
+                  : _headerChild();
         }),
         !_isDragStart
             ? SizedBox()
             : Align(
-                alignment: widget.isVertical
-                    ? Alignment.topCenter
-                    : Alignment.centerRight,
+                alignment: widget.isVertical ? Alignment.topCenter : Alignment.centerRight,
                 child: DragTarget(
-                  builder:
-                      (context, List<String> candidateData, rejectedData) =>
-                          Container(
+                  builder: (context, List<String> candidateData, rejectedData) => Container(
                     height: widget.isVertical ? 20 : double.infinity,
                     width: widget.isVertical ? double.infinity : 20,
                     color: Colors.transparent,
@@ -338,13 +316,9 @@ class _MainGridViewState extends State<MainGridView> {
         !_isDragStart
             ? SizedBox()
             : Align(
-                alignment: widget.isVertical
-                    ? Alignment.bottomCenter
-                    : Alignment.centerLeft,
+                alignment: widget.isVertical ? Alignment.bottomCenter : Alignment.centerLeft,
                 child: DragTarget(
-                  builder:
-                      (context, List<String> candidateData, rejectedData) =>
-                          Container(
+                  builder: (context, List<String> candidateData, rejectedData) => Container(
                     height: widget.isVertical ? 20 : double.infinity,
                     width: widget.isVertical ? double.infinity : 20,
                     color: Colors.transparent,
