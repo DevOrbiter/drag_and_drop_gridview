@@ -5,3 +5,7 @@
 .pub/
 
 build/
+
+# IntelliJ and AndroidStudio related
+.idea/
+*.iml
