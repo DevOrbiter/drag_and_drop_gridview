@@ -31,8 +31,8 @@ class DragAndDropGridView extends MainGridView {
     ScrollPhysics physics,
     bool isCustomFeedback = false,
     bool isCustomChildWhenDragging = false,
-    @required Function onWillAccept,
-    @required Function onReorder,
+    @required WillAcceptCallback onWillAccept,
+    @required ReorderCallback onReorder,
     EdgeInsetsGeometry padding,
     @required SliverGridDelegate gridDelegate,
     @required IndexedWidgetBuilder itemBuilder,
@@ -43,14 +43,10 @@ class DragAndDropGridView extends MainGridView {
     double cacheExtent,
     int semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
-        ScrollViewKeyboardDismissBehavior.manual,
-    Function feedback,
-    Function childWhenDragging,
-  })  : assert(itemBuilder != null &&
-            gridDelegate != null &&
-            onReorder != null &&
-            onWillAccept != null),
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    WidgetPositionBuilder feedback,
+    WidgetPositionBuilder childWhenDragging,
+  })  : assert(itemBuilder != null && gridDelegate != null && onReorder != null && onWillAccept != null),
         super(
           key: key,
           reverse: reverse,
@@ -102,8 +98,8 @@ class DragAndDropGridView extends MainGridView {
     ScrollPhysics physics,
     bool isCustomFeedback = false,
     bool isCustomChildWhenDragging = false,
-    @required Function onWillAccept,
-    @required Function onReorder,
+    @required WillAcceptCallback onWillAccept,
+    @required ReorderCallback onReorder,
     EdgeInsetsGeometry padding,
     @required SliverGridDelegate gridDelegate,
     @required IndexedWidgetBuilder itemBuilder,
@@ -114,14 +110,10 @@ class DragAndDropGridView extends MainGridView {
     double cacheExtent,
     int semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
-        ScrollViewKeyboardDismissBehavior.manual,
-    Function feedback,
-    Function childWhenDragging,
-  })  : assert(itemBuilder != null &&
-            gridDelegate != null &&
-            onReorder != null &&
-            onWillAccept != null),
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    WidgetPositionBuilder feedback,
+    WidgetPositionBuilder childWhenDragging,
+  })  : assert(itemBuilder != null && gridDelegate != null && onReorder != null && onWillAccept != null),
         super(
           key: key,
           reverse: reverse,
@@ -185,13 +177,13 @@ class DragAndDropGridView extends MainGridView {
     ScrollPhysics physics,
     bool isCustomFeedback = false,
     bool isCustomChildWhenDragging = false,
-    @required Function onWillAccept,
-    Function onWillAcceptHeader,
+    @required WillAcceptCallback onWillAccept,
+    WillAcceptCallback onWillAcceptHeader,
     @required IndexedWidgetBuilder itemBuilderHeader,
     bool allHeaderChildNonDraggable = false,
     SliverGridDelegate headerGridDelegate,
-    @required Function onReorder,
-    Function onReorderHeader,
+    @required ReorderCallback onReorder,
+    ReorderCallback onReorderHeader,
     int headerItemCount,
     EdgeInsetsGeometry headerPadding,
     EdgeInsetsGeometry padding,
@@ -204,10 +196,9 @@ class DragAndDropGridView extends MainGridView {
     double cacheExtent,
     int semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
-        ScrollViewKeyboardDismissBehavior.manual,
-    Function feedback,
-    Function childWhenDragging,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    WidgetPositionBuilder feedback,
+    WidgetPositionBuilder childWhenDragging,
   })  : assert(itemBuilder != null &&
             gridDelegate != null &&
             onReorder != null &&
@@ -283,13 +274,13 @@ class DragAndDropGridView extends MainGridView {
     ScrollPhysics physics,
     bool isCustomFeedback = false,
     bool isCustomChildWhenDragging = false,
-    @required Function onWillAccept,
-    Function onWillAcceptHeader,
+    @required WillAcceptCallback onWillAccept,
+    WillAcceptCallback onWillAcceptHeader,
     @required IndexedWidgetBuilder itemBuilderHeader,
     bool allHeaderChildNonDraggable = false,
     SliverGridDelegate headerGridDelegate,
-    @required Function onReorder,
-    Function onReorderHeader,
+    @required ReorderCallback onReorder,
+    ReorderCallback onReorderHeader,
     int headerItemCount,
     EdgeInsetsGeometry headerPadding,
     EdgeInsetsGeometry padding,
@@ -302,10 +293,9 @@ class DragAndDropGridView extends MainGridView {
     double cacheExtent,
     int semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
-        ScrollViewKeyboardDismissBehavior.manual,
-    Function feedback,
-    Function childWhenDragging,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    WidgetPositionBuilder feedback,
+    WidgetPositionBuilder childWhenDragging,
   })  : assert(itemBuilder != null &&
             gridDelegate != null &&
             onReorder != null &&

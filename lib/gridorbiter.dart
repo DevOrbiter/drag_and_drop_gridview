@@ -1,6 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
 import 'package:drag_and_drop_gridview/drag.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+
+typedef bool WillAcceptCallback(int data, int position);
+typedef Widget WidgetPositionBuilder(int index);
 
 class MainGridView extends StatefulWidget {
   MainGridView(
@@ -52,14 +55,14 @@ class MainGridView extends StatefulWidget {
   final bool isCustomChildWhenDragging;
 
   // onWillAccept determine whether the drag object will accept or not. Based on that return a bool.
-  final Function onWillAccept;
-  final Function onWillAcceptHeader;
+  final WillAcceptCallback onWillAccept;
+  final WillAcceptCallback onWillAcceptHeader;
   final bool allHeaderChildNonDraggable;
   final EdgeInsetsGeometry headerPadding;
 
   // This method onReorder has two parameters oldIndex and newIndex
-  final Function onReorder;
-  final Function onReorderHeader;
+  final ReorderCallback onReorder;
+  final ReorderCallback onReorderHeader;
 
   final EdgeInsetsGeometry padding;
   final int headerItemCount;
@@ -78,11 +81,11 @@ class MainGridView extends StatefulWidget {
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
   final bool isVertical;
 
-  // set you feedback child here and to get this working please set isCustomFeedback to true
-  final Function feedback;
+  /// set your feedback child here and to get this working please set isCustomFeedback to true
+  final WidgetPositionBuilder feedback;
 
-  // set you custom child here and to get this working please set isCustomChildWhenDragging to true
-  final Function childWhenDragging;
+  /// set your custom child here and to get this working please set isCustomChildWhenDragging to true
+  final WidgetPositionBuilder childWhenDragging;
 
   @override
   _MainGridViewState createState() => _MainGridViewState();
