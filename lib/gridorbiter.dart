@@ -35,7 +35,9 @@ class MainGridView extends StatefulWidget {
       this.isCustomChildWhenDragging,
       @required this.gridDelegate,
       this.dragStartBehavior = DragStartBehavior.start,
-      this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual});
+      this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+      this.onDragEnd,
+      this.onDraggableCanceled});
 
   final Key key;
 
@@ -60,6 +62,12 @@ class MainGridView extends StatefulWidget {
   // This method onReorder has two parameters oldIndex and newIndex
   final Function onReorder;
   final Function onReorderHeader;
+
+  // This method onDragEnd is called at the end of any dragging
+  final Function(DraggableDetails) onDragEnd;
+
+  // The method onDraggableCanceled is called, when dragging is ended, but onReorder is not called
+  final Function(Velocity, Offset) onDraggableCanceled;
 
   final EdgeInsetsGeometry padding;
   final int headerItemCount;
@@ -206,13 +214,17 @@ class _MainGridViewState extends State<MainGridView> {
           ? widget.childWhenDragging(pos)
           : mainWidget,
       axis: isFromArrange
-          ? widget.isVertical ? Axis.horizontal : Axis.vertical
+          ? widget.isVertical
+              ? Axis.horizontal
+              : Axis.vertical
           : null,
       onDragStarted: () {
         setState(() {
           _isDragStart = true;
         });
       },
+      onDraggableCanceled: widget.onDraggableCanceled,
+      onDragEnd: widget.onDragEnd,
       onDragCompleted: () {
         setState(() {
           _isDragStart = false;
@@ -308,8 +320,12 @@ class _MainGridViewState extends State<MainGridView> {
           _gridViewHeight = constraints.maxHeight;
           _gridViewWidth = constraints.maxWidth;
           return widget.isStickyHeader
-              ? widget.isVertical ? _tableBuilder() : _tableBuilderHorizontal()
-              : widget.header == null ? _dragAndDropGrid() : _headerChild();
+              ? widget.isVertical
+                  ? _tableBuilder()
+                  : _tableBuilderHorizontal()
+              : widget.header == null
+                  ? _dragAndDropGrid()
+                  : _headerChild();
         }),
         !_isDragStart
             ? SizedBox()
