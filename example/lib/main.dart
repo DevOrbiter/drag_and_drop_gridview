@@ -1,9 +1,6 @@
 import 'package:drag_and_drop_gridview/devdrag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,9 +24,9 @@ class _MyAppState extends State<MyApp> {
   ];
 
   int variableSet = 0;
-  ScrollController _scrollController;
-  double width;
-  double height;
+  ScrollController? _scrollController;
+  double? width;
+  double? height;
 
   @override
   void initState() {

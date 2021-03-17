@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:drag_and_drop_gridview/drag.dart';
 
+typedef bool WillAcceptCallback(int data, int position);
+typedef Widget WidgetPositionBuilder(int index);
+
 class MainGridView extends StatefulWidget {
   MainGridView(
       {this.key,
       this.header,
       this.headerItemCount,
-      this.reverse,
+      this.reverse = false,
       this.headerGridDelegate,
-      @required this.itemBuilder,
-      @required this.onWillAccept,
+      required this.itemBuilder,
+      required this.onWillAccept,
       this.feedback,
-      @required this.onReorder,
+      required this.onReorder,
       this.childWhenDragging,
       this.itemBuilderHeader,
       this.controller,
@@ -20,9 +23,9 @@ class MainGridView extends StatefulWidget {
       this.padding,
       this.semanticChildCount,
       this.physics,
-      this.addAutomaticKeepAlives,
-      this.addRepaintBoundaries,
-      this.addSemanticIndexes,
+      this.addAutomaticKeepAlives = true,
+      this.addRepaintBoundaries = true,
+      this.addSemanticIndexes = true,
       this.headerPadding,
       this.cacheExtent,
       this.itemCount,
@@ -31,19 +34,19 @@ class MainGridView extends StatefulWidget {
       this.isStickyHeader = false,
       this.onReorderHeader,
       this.onWillAcceptHeader,
-      this.isCustomFeedback,
-      this.isCustomChildWhenDragging,
-      @required this.gridDelegate,
+      this.isCustomFeedback = false,
+      this.isCustomChildWhenDragging = false,
+      required this.gridDelegate,
       this.dragStartBehavior = DragStartBehavior.start,
       this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual});
 
-  final Key key;
+  final Key? key;
 
   final bool reverse;
-  final Widget header;
-  final ScrollController controller;
-  final bool primary;
-  final ScrollPhysics physics;
+  final Widget? header;
+  final ScrollController? controller;
+  final bool? primary;
+  final ScrollPhysics? physics;
 
   // If you want to set custom feedback child at the time of drag then set this parameter to true
   final bool isCustomFeedback;
@@ -52,56 +55,62 @@ class MainGridView extends StatefulWidget {
   final bool isCustomChildWhenDragging;
 
   // onWillAccept determine whether the drag object will accept or not. Based on that return a bool.
-  final Function onWillAccept;
-  final Function onWillAcceptHeader;
+  final WillAcceptCallback onWillAccept;
+  final WillAcceptCallback? onWillAcceptHeader;
   final bool allHeaderChildNonDraggable;
-  final EdgeInsetsGeometry headerPadding;
+  final EdgeInsetsGeometry? headerPadding;
 
   // This method onReorder has two parameters oldIndex and newIndex
-  final Function onReorder;
-  final Function onReorderHeader;
+  final ReorderCallback onReorder;
+  final ReorderCallback? onReorderHeader;
 
-  final EdgeInsetsGeometry padding;
-  final int headerItemCount;
+  final EdgeInsetsGeometry? padding;
+  final int? headerItemCount;
   final bool isStickyHeader;
-  final SliverGridDelegate headerGridDelegate;
+  final SliverGridDelegate? headerGridDelegate;
   final SliverGridDelegate gridDelegate;
   final IndexedWidgetBuilder itemBuilder;
-  final IndexedWidgetBuilder itemBuilderHeader;
-  final int itemCount;
+  final IndexedWidgetBuilder? itemBuilderHeader;
+  final int? itemCount;
   final bool addAutomaticKeepAlives;
   final bool addRepaintBoundaries;
   final bool addSemanticIndexes;
-  final double cacheExtent;
-  final int semanticChildCount;
+  final double? cacheExtent;
+  final int? semanticChildCount;
   final DragStartBehavior dragStartBehavior;
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
   final bool isVertical;
 
   // set you feedback child here and to get this working please set isCustomFeedback to true
-  final Function feedback;
+  final WidgetPositionBuilder? feedback;
 
   // set you custom child here and to get this working please set isCustomChildWhenDragging to true
-  final Function childWhenDragging;
+  final WidgetPositionBuilder? childWhenDragging;
 
   @override
   _MainGridViewState createState() => _MainGridViewState();
 }
 
 class _MainGridViewState extends State<MainGridView> {
-  ScrollController _scrollController;
-  ScrollController _scrollController2;
+  late final ScrollController _scrollController;
+  ScrollController? _scrollController2;
   var _gridViewHeight, _gridViewWidth;
   var _isDragStart = false;
+  bool _ownsScrollController = false;
 
   @override
   void initState() {
-    if (widget.controller == null) {
+    super.initState();
+
+    final ctl = widget.controller;
+
+    if (ctl == null) {
+      _ownsScrollController = true;
       _scrollController = ScrollController();
       _scrollController2 = ScrollController();
-    } else
-      _scrollController = widget.controller;
-    super.initState();
+    } else {
+      _scrollController = ctl;
+    }
   }
 
   _moveUp() {
@@ -124,10 +133,10 @@ class _MainGridViewState extends State<MainGridView> {
         curve: Curves.linear, duration: Duration(milliseconds: 500));
   }
 
-  Widget _headerChild() {
+  Widget _headerChild(Widget header) {
     return ListView(
       controller: _scrollController,
-      children: [widget.header, _dragAndDropGrid()],
+      children: [header, _dragAndDropGrid()],
     );
   }
 
@@ -170,24 +179,28 @@ class _MainGridViewState extends State<MainGridView> {
   Widget _gridChild(Widget mainWidget, int pos,
       {bool isFromArrangeP = false, bool isNonDraggable = false}) {
     return DragTarget(
-      builder: (context, List<String> candidateData, rejectedData) =>
+      builder: (_, __, ___) =>
           isNonDraggable
               ? mainWidget
               : _dragItemBuilder(mainWidget, pos,
                   isFromArrange: isFromArrangeP),
-      onWillAccept: (data) {
-        if (!isFromArrangeP) {
-          return widget.onWillAccept(int.parse(data), pos);
+      onWillAccept: (String? data) {
+        if (data != null) {
+          final onWillAcceptHeader = widget.onWillAcceptHeader;
+          if (!isFromArrangeP) {
+            return widget.onWillAccept(int.parse(data), pos);
+          }
+          return data.toString().contains("h") && onWillAcceptHeader != null
+              ? onWillAcceptHeader(int.parse(data.toString().replaceAll("h", "")), pos)
+              : false;
         }
-        return data.toString().contains("h")
-            ? widget.onWillAcceptHeader(
-                int.parse(data.toString().replaceAll("h", "")), pos)
-            : false;
+
+        return false;
       },
-      onAccept: (data) {
+      onAccept: (String data) {
         if (isFromArrangeP) {
-          if (data.toString().contains("h")) {
-            widget.onReorderHeader(
+          if (data.toString().contains("h") && widget.onReorderHeader != null) {
+            widget.onReorderHeader!(
                 int.parse(data.toString().replaceAll("h", "")), pos);
           }
         } else
@@ -198,12 +211,15 @@ class _MainGridViewState extends State<MainGridView> {
 
   Widget _dragItemBuilder(Widget mainWidget, int pos,
       {bool isFromArrange = false}) {
+    final feedback = widget.feedback;
+    final childWhenDragging = widget.childWhenDragging;
+
     return LongPressDraggable(
       data: isFromArrange ? "h$pos" : "$pos",
       child: mainWidget,
-      feedback: widget.isCustomFeedback ? widget.feedback(pos) : mainWidget,
-      childWhenDragging: widget.isCustomChildWhenDragging
-          ? widget.childWhenDragging(pos)
+      feedback: widget.isCustomFeedback && feedback != null ? feedback(pos) : mainWidget,
+      childWhenDragging: widget.isCustomChildWhenDragging && childWhenDragging != null
+          ? childWhenDragging(pos)
           : mainWidget,
       axis: isFromArrange
           ? widget.isVertical ? Axis.horizontal : Axis.vertical
@@ -235,7 +251,7 @@ class _MainGridViewState extends State<MainGridView> {
             gridDelegate: widget.headerGridDelegate ?? widget.gridDelegate,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, pos) {
-              var mainWidget = widget.itemBuilderHeader(context, pos);
+              var mainWidget = widget.itemBuilderHeader!(context, pos);
               if (widget.allHeaderChildNonDraggable) {
                 return mainWidget;
               }
@@ -274,7 +290,7 @@ class _MainGridViewState extends State<MainGridView> {
             padding: widget.headerPadding,
             gridDelegate: widget.headerGridDelegate ?? widget.gridDelegate,
             itemBuilder: (context, pos) {
-              var mainWidget = widget.itemBuilderHeader(context, pos);
+              var mainWidget = widget.itemBuilderHeader!(context, pos);
               if (widget.allHeaderChildNonDraggable) {
                 return mainWidget;
               }
@@ -302,6 +318,8 @@ class _MainGridViewState extends State<MainGridView> {
 
   @override
   Widget build(BuildContext context) {
+    final header = widget.header;
+
     return Stack(
       children: [
         LayoutBuilder(builder: (context, constraints) {
@@ -309,7 +327,7 @@ class _MainGridViewState extends State<MainGridView> {
           _gridViewWidth = constraints.maxWidth;
           return widget.isStickyHeader
               ? widget.isVertical ? _tableBuilder() : _tableBuilderHorizontal()
-              : widget.header == null ? _dragAndDropGrid() : _headerChild();
+              : header == null ? _dragAndDropGrid() : _headerChild(header);
         }),
         !_isDragStart
             ? SizedBox()
@@ -319,13 +337,13 @@ class _MainGridViewState extends State<MainGridView> {
                     : Alignment.centerRight,
                 child: DragTarget(
                   builder:
-                      (context, List<String> candidateData, rejectedData) =>
+                      (context, List<String?> candidateData, rejectedData) =>
                           Container(
                     height: widget.isVertical ? 20 : double.infinity,
                     width: widget.isVertical ? double.infinity : 20,
                     color: Colors.transparent,
                   ),
-                  onWillAccept: (data) {
+                  onWillAccept: (_) {
                     if (!widget.isVertical) {
                       _moveRight();
                       return false;
@@ -343,13 +361,13 @@ class _MainGridViewState extends State<MainGridView> {
                     : Alignment.centerLeft,
                 child: DragTarget(
                   builder:
-                      (context, List<String> candidateData, rejectedData) =>
+                      (context, List<String?> candidateData, rejectedData) =>
                           Container(
                     height: widget.isVertical ? 20 : double.infinity,
                     width: widget.isVertical ? double.infinity : 20,
                     color: Colors.transparent,
                   ),
-                  onWillAccept: (data) {
+                  onWillAccept: (_) {
                     if (!widget.isVertical) {
                       _moveLeft();
                       return false;
@@ -361,5 +379,14 @@ class _MainGridViewState extends State<MainGridView> {
               ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    if (_ownsScrollController) {
+      _scrollController.dispose();
+    }
+    _scrollController2?.dispose();
+    super.dispose();
   }
 }

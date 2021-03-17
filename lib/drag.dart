@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DragItem extends StatefulWidget {
-  final Key key;
+  final Key? key;
   final bool isDraggable;
   final bool isDropable;
   final Widget child;
@@ -10,7 +10,7 @@ class DragItem extends StatefulWidget {
     this.key,
     this.isDraggable = true,
     this.isDropable = true,
-    @required this.child,
+    /*required*/ required this.child,
   });
 
   @override
