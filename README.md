@@ -740,7 +740,7 @@ And in `isDropable` if you pass `false` then this item will not accept any dragg
 
 import 'package:drag_and_drop_gridview/drag.dart'; // import this header
 
-DrarItem(
+DragItem(
     isDraggable: true, // whether draggable or not (Default true)
     isDropable: false, // whether dropable or not (Default true)
     child: ..///, //and pass the child
