@@ -47,7 +47,9 @@ class DragAndDropGridView extends MainGridView {
         ScrollViewKeyboardDismissBehavior.manual,
     WidgetPositionBuilder? feedback,
     WidgetPositionBuilder? childWhenDragging,
-  })  : super(
+    Function? onDragStarted,
+    Function(DraggableDetails)? onDragEnd,
+  }) : super(
           key: key,
           reverse: reverse,
           header: header,
@@ -71,6 +73,8 @@ class DragAndDropGridView extends MainGridView {
           gridDelegate: gridDelegate,
           dragStartBehavior: dragStartBehavior,
           keyboardDismissBehavior: keyboardDismissBehavior,
+          onDragStarted: onDragStarted,
+          onDragEnd: onDragEnd,
         );
 
   /// This constructor  use to achive the Horizontal Reorderable / Re-Indexing feature in DragAndDropGridView.
@@ -114,7 +118,9 @@ class DragAndDropGridView extends MainGridView {
         ScrollViewKeyboardDismissBehavior.manual,
     WidgetPositionBuilder? feedback,
     WidgetPositionBuilder? childWhenDragging,
-  })  : super(
+    Function? onDragStarted,
+    Function(DraggableDetails)? onDragEnd,
+  }) : super(
           key: key,
           reverse: reverse,
           itemBuilder: itemBuilder,
@@ -138,6 +144,8 @@ class DragAndDropGridView extends MainGridView {
           dragStartBehavior: dragStartBehavior,
           keyboardDismissBehavior: keyboardDismissBehavior,
           isVertical: false,
+          onDragStarted: onDragStarted,
+          onDragEnd: onDragEnd,
         );
 
   /// To achive the sticky header in gridview just call this stickyHeader constructor.
@@ -200,7 +208,9 @@ class DragAndDropGridView extends MainGridView {
         ScrollViewKeyboardDismissBehavior.manual,
     WidgetPositionBuilder? feedback,
     WidgetPositionBuilder? childWhenDragging,
-  })  : super(
+    Function? onDragStarted,
+    Function(DraggableDetails)? onDragEnd,
+  }) : super(
           key: key,
           reverse: reverse,
           itemBuilder: itemBuilder,
@@ -231,6 +241,8 @@ class DragAndDropGridView extends MainGridView {
           headerPadding: headerPadding,
           headerGridDelegate: headerGridDelegate,
           headerItemCount: headerItemCount,
+          onDragStarted: onDragStarted,
+          onDragEnd: onDragEnd,
         );
 
   /// To achive the sticky header in horizontal gridview just call this horizontalStickyHeader constructor.
@@ -293,36 +305,41 @@ class DragAndDropGridView extends MainGridView {
         ScrollViewKeyboardDismissBehavior.manual,
     WidgetPositionBuilder? feedback,
     WidgetPositionBuilder? childWhenDragging,
-  })  : super(
-            key: key,
-            reverse: reverse,
-            itemBuilder: itemBuilder,
-            onWillAccept: onWillAccept,
-            feedback: feedback,
-            onReorder: onReorder,
-            onReorderHeader: onReorderHeader,
-            onWillAcceptHeader: onWillAcceptHeader,
-            childWhenDragging: childWhenDragging,
-            controller: controller,
-            padding: padding,
-            semanticChildCount: semanticChildCount,
-            physics: physics,
-            addAutomaticKeepAlives: addAutomaticKeepAlives,
-            addRepaintBoundaries: addRepaintBoundaries,
-            addSemanticIndexes: addSemanticIndexes,
-            cacheExtent: cacheExtent,
-            itemCount: itemCount,
-            primary: primary,
-            isCustomFeedback: isCustomFeedback,
-            isCustomChildWhenDragging: isCustomChildWhenDragging,
-            gridDelegate: gridDelegate,
-            dragStartBehavior: dragStartBehavior,
-            keyboardDismissBehavior: keyboardDismissBehavior,
-            itemBuilderHeader: itemBuilderHeader,
-            isStickyHeader: true,
-            allHeaderChildNonDraggable: allHeaderChildNonDraggable,
-            headerPadding: headerPadding,
-            headerGridDelegate: headerGridDelegate,
-            headerItemCount: headerItemCount,
-            isVertical: false);
+    Function? onDragStarted,
+    Function(DraggableDetails)? onDragEnd,
+  }) : super(
+          key: key,
+          reverse: reverse,
+          itemBuilder: itemBuilder,
+          onWillAccept: onWillAccept,
+          feedback: feedback,
+          onReorder: onReorder,
+          onReorderHeader: onReorderHeader,
+          onWillAcceptHeader: onWillAcceptHeader,
+          childWhenDragging: childWhenDragging,
+          controller: controller,
+          padding: padding,
+          semanticChildCount: semanticChildCount,
+          physics: physics,
+          addAutomaticKeepAlives: addAutomaticKeepAlives,
+          addRepaintBoundaries: addRepaintBoundaries,
+          addSemanticIndexes: addSemanticIndexes,
+          cacheExtent: cacheExtent,
+          itemCount: itemCount,
+          primary: primary,
+          isCustomFeedback: isCustomFeedback,
+          isCustomChildWhenDragging: isCustomChildWhenDragging,
+          gridDelegate: gridDelegate,
+          dragStartBehavior: dragStartBehavior,
+          keyboardDismissBehavior: keyboardDismissBehavior,
+          itemBuilderHeader: itemBuilderHeader,
+          isStickyHeader: true,
+          allHeaderChildNonDraggable: allHeaderChildNonDraggable,
+          headerPadding: headerPadding,
+          headerGridDelegate: headerGridDelegate,
+          headerItemCount: headerItemCount,
+          isVertical: false,
+          onDragStarted: onDragStarted,
+          onDragEnd: onDragEnd,
+        );
 }
