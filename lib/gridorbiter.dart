@@ -6,39 +6,43 @@ typedef bool WillAcceptCallback(int data, int position);
 typedef Widget WidgetPositionBuilder(int index);
 
 class MainGridView extends StatefulWidget {
-  MainGridView(
-      {this.key,
-      this.header,
-      this.headerItemCount,
-      this.reverse = false,
-      this.headerGridDelegate,
-      required this.itemBuilder,
-      required this.onWillAccept,
-      this.feedback,
-      required this.onReorder,
-      this.childWhenDragging,
-      this.itemBuilderHeader,
-      this.controller,
-      this.isVertical = true,
-      this.padding,
-      this.semanticChildCount,
-      this.physics,
-      this.addAutomaticKeepAlives = true,
-      this.addRepaintBoundaries = true,
-      this.addSemanticIndexes = true,
-      this.headerPadding,
-      this.cacheExtent,
-      this.itemCount,
-      this.allHeaderChildNonDraggable = false,
-      this.primary,
-      this.isStickyHeader = false,
-      this.onReorderHeader,
-      this.onWillAcceptHeader,
-      this.isCustomFeedback = false,
-      this.isCustomChildWhenDragging = false,
-      required this.gridDelegate,
-      this.dragStartBehavior = DragStartBehavior.start,
-      this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual});
+  MainGridView({
+    this.key,
+    this.header,
+    this.headerItemCount,
+    this.reverse = false,
+    this.headerGridDelegate,
+    required this.itemBuilder,
+    required this.onWillAccept,
+    this.feedback,
+    required this.onReorder,
+    this.childWhenDragging,
+    this.itemBuilderHeader,
+    this.controller,
+    this.isVertical = true,
+    this.padding,
+    this.semanticChildCount,
+    this.physics,
+    this.addAutomaticKeepAlives = true,
+    this.addRepaintBoundaries = true,
+    this.addSemanticIndexes = true,
+    this.headerPadding,
+    this.cacheExtent,
+    this.itemCount,
+    this.allHeaderChildNonDraggable = false,
+    this.primary,
+    this.isStickyHeader = false,
+    this.onReorderHeader,
+    this.onWillAcceptHeader,
+    this.isCustomFeedback = false,
+    this.isCustomChildWhenDragging = false,
+    required this.gridDelegate,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    this.onDragStarted,
+    this.onDragEnd,
+    this.animationDisabledOnDragging = false,
+  });
 
   final Key? key;
 
@@ -63,6 +67,8 @@ class MainGridView extends StatefulWidget {
   // This method onReorder has two parameters oldIndex and newIndex
   final ReorderCallback onReorder;
   final ReorderCallback? onReorderHeader;
+  final Function? onDragStarted;
+  final Function(DraggableDetails)? onDragEnd;
 
   final EdgeInsetsGeometry? padding;
   final int? headerItemCount;
@@ -80,6 +86,7 @@ class MainGridView extends StatefulWidget {
   final DragStartBehavior dragStartBehavior;
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
   final bool isVertical;
+  final bool animationDisabledOnDragging;
 
   // set you feedback child here and to get this working please set isCustomFeedback to true
   final WidgetPositionBuilder? feedback;
@@ -88,10 +95,10 @@ class MainGridView extends StatefulWidget {
   final WidgetPositionBuilder? childWhenDragging;
 
   @override
-  _MainGridViewState createState() => _MainGridViewState();
+  MainGridViewState createState() => MainGridViewState();
 }
 
-class _MainGridViewState extends State<MainGridView> {
+class MainGridViewState extends State<MainGridView> {
   late final ScrollController _scrollController;
   ScrollController? _scrollController2;
   var _gridViewHeight, _gridViewWidth;
@@ -114,21 +121,25 @@ class _MainGridViewState extends State<MainGridView> {
   }
 
   _moveUp() {
+    if (widget.animationDisabledOnDragging) return;
     _scrollController.animateTo(_scrollController.offset - _gridViewHeight,
         curve: Curves.linear, duration: Duration(milliseconds: 500));
   }
 
   _moveDown() {
+    if (widget.animationDisabledOnDragging) return;
     _scrollController.animateTo(_scrollController.offset + _gridViewHeight,
         curve: Curves.linear, duration: Duration(milliseconds: 500));
   }
 
   _moveLeft() {
+    if (widget.animationDisabledOnDragging) return;
     _scrollController.animateTo(_scrollController.offset - _gridViewWidth,
         curve: Curves.linear, duration: Duration(milliseconds: 500));
   }
 
   _moveRight() {
+    if (widget.animationDisabledOnDragging) return;
     _scrollController.animateTo(_scrollController.offset + _gridViewWidth,
         curve: Curves.linear, duration: Duration(milliseconds: 500));
   }
@@ -179,11 +190,9 @@ class _MainGridViewState extends State<MainGridView> {
   Widget _gridChild(Widget mainWidget, int pos,
       {bool isFromArrangeP = false, bool isNonDraggable = false}) {
     return DragTarget(
-      builder: (_, __, ___) =>
-          isNonDraggable
-              ? mainWidget
-              : _dragItemBuilder(mainWidget, pos,
-                  isFromArrange: isFromArrangeP),
+      builder: (_, __, ___) => isNonDraggable
+          ? mainWidget
+          : _dragItemBuilder(mainWidget, pos, isFromArrange: isFromArrangeP),
       onWillAccept: (String? data) {
         if (data != null) {
           final onWillAcceptHeader = widget.onWillAcceptHeader;
@@ -191,7 +200,8 @@ class _MainGridViewState extends State<MainGridView> {
             return widget.onWillAccept(int.parse(data), pos);
           }
           return data.toString().contains("h") && onWillAcceptHeader != null
-              ? onWillAcceptHeader(int.parse(data.toString().replaceAll("h", "")), pos)
+              ? onWillAcceptHeader(
+                  int.parse(data.toString().replaceAll("h", "")), pos)
               : false;
         }
 
@@ -217,18 +227,28 @@ class _MainGridViewState extends State<MainGridView> {
     return LongPressDraggable(
       data: isFromArrange ? "h$pos" : "$pos",
       child: mainWidget,
-      feedback: widget.isCustomFeedback && feedback != null ? feedback(pos) : mainWidget,
-      childWhenDragging: widget.isCustomChildWhenDragging && childWhenDragging != null
-          ? childWhenDragging(pos)
+      feedback: widget.isCustomFeedback && feedback != null
+          ? feedback(pos)
           : mainWidget,
+      childWhenDragging:
+          widget.isCustomChildWhenDragging && childWhenDragging != null
+              ? childWhenDragging(pos)
+              : mainWidget,
       axis: isFromArrange
-          ? widget.isVertical ? Axis.horizontal : Axis.vertical
+          ? widget.isVertical
+              ? Axis.horizontal
+              : Axis.vertical
           : null,
       onDragStarted: () {
         setState(() {
           _isDragStart = true;
         });
+
+        if (widget.onDragStarted != null) {
+          widget.onDragStarted!();
+        }
       },
+      onDragEnd: widget.onDragEnd,
       onDragCompleted: () {
         setState(() {
           _isDragStart = false;
@@ -242,7 +262,7 @@ class _MainGridViewState extends State<MainGridView> {
       children: [
         NotificationListener<OverscrollIndicatorNotification>(
           onNotification: (overscroll) {
-            overscroll.disallowGlow();
+            overscroll.disallowIndicator();
             return true;
           },
           child: GridView.builder(
@@ -282,7 +302,7 @@ class _MainGridViewState extends State<MainGridView> {
       children: [
         NotificationListener<OverscrollIndicatorNotification>(
           onNotification: (overscroll) {
-            overscroll.disallowGlow();
+            overscroll.disallowIndicator();
             return true;
           },
           child: GridView.builder(
@@ -326,8 +346,12 @@ class _MainGridViewState extends State<MainGridView> {
           _gridViewHeight = constraints.maxHeight;
           _gridViewWidth = constraints.maxWidth;
           return widget.isStickyHeader
-              ? widget.isVertical ? _tableBuilder() : _tableBuilderHorizontal()
-              : header == null ? _dragAndDropGrid() : _headerChild(header);
+              ? widget.isVertical
+                  ? _tableBuilder()
+                  : _tableBuilderHorizontal()
+              : header == null
+                  ? _dragAndDropGrid()
+                  : _headerChild(header);
         }),
         !_isDragStart
             ? SizedBox()
