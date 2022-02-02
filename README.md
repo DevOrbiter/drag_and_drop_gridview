@@ -118,7 +118,6 @@ Below example shows you how to implement `DragAndDropGridView` easily.
 ``` dart
 import 'package:drag_and_drop_gridview/devdrag.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
@@ -228,7 +227,6 @@ This is the example of how you can achive the **Horizontal Reorderable / Re-Inde
 import 'package:drag_and_drop_gridview/devdrag.dart';
 import 'package:drag_and_drop_gridview/drag.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
@@ -344,7 +342,6 @@ This is the example of how you can achive the **Vertical Reorderable / Re-Indexi
 ``` dart
 import 'package:drag_and_drop_gridview/devdrag.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
@@ -463,7 +460,6 @@ This is the example of how you can achive the **Reordering Effect While Hovering
 
 import 'package:drag_and_drop_gridview/devdrag.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'dart:async';
  
 import 'package:flutter/services.dart';
@@ -623,7 +619,6 @@ But if you pass any vertical scrollview don't forgot to add shrinkwrap or wrap t
 import 'package:drag_and_drop_gridview/devdrag.dart';
 import 'package:drag_and_drop_gridview/drag.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
@@ -766,7 +761,6 @@ and required parameters are:
 import 'package:drag_and_drop_gridview/devdrag.dart';
 import 'package:drag_and_drop_gridview/drag.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
@@ -942,7 +936,6 @@ and required parameters are:
 import 'package:drag_and_drop_gridview/devdrag.dart';
 import 'package:drag_and_drop_gridview/drag.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
@@ -1098,7 +1091,6 @@ You can change the child by set the `isCustomChildWhenDragging` to true and retu
 
 import 'package:drag_and_drop_gridview/devdrag.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'dart:async';
  
 import 'package:flutter/services.dart';
@@ -1204,7 +1196,6 @@ You can change the child by set the `isCustomFeedback` to true and return your c
 
 import 'package:drag_and_drop_gridview/devdrag.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'dart:async';
  
 import 'package:flutter/services.dart';
