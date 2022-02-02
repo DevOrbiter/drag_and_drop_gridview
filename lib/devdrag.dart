@@ -49,6 +49,7 @@ class DragAndDropGridView extends MainGridView {
     WidgetPositionBuilder? childWhenDragging,
     Function? onDragStarted,
     Function(DraggableDetails)? onDragEnd,
+    bool animationDisabledOnDragging = false,
   }) : super(
           key: key,
           reverse: reverse,
@@ -75,6 +76,7 @@ class DragAndDropGridView extends MainGridView {
           keyboardDismissBehavior: keyboardDismissBehavior,
           onDragStarted: onDragStarted,
           onDragEnd: onDragEnd,
+          animationDisabledOnDragging: animationDisabledOnDragging,
         );
 
   /// This constructor  use to achive the Horizontal Reorderable / Re-Indexing feature in DragAndDropGridView.
@@ -120,6 +122,7 @@ class DragAndDropGridView extends MainGridView {
     WidgetPositionBuilder? childWhenDragging,
     Function? onDragStarted,
     Function(DraggableDetails)? onDragEnd,
+    bool animationDisabledOnDragging = false,
   }) : super(
           key: key,
           reverse: reverse,
@@ -146,6 +149,7 @@ class DragAndDropGridView extends MainGridView {
           isVertical: false,
           onDragStarted: onDragStarted,
           onDragEnd: onDragEnd,
+          animationDisabledOnDragging: animationDisabledOnDragging,
         );
 
   /// To achive the sticky header in gridview just call this stickyHeader constructor.
@@ -210,6 +214,7 @@ class DragAndDropGridView extends MainGridView {
     WidgetPositionBuilder? childWhenDragging,
     Function? onDragStarted,
     Function(DraggableDetails)? onDragEnd,
+    bool animationDisabledOnDragging = false,
   }) : super(
           key: key,
           reverse: reverse,
@@ -243,6 +248,7 @@ class DragAndDropGridView extends MainGridView {
           headerItemCount: headerItemCount,
           onDragStarted: onDragStarted,
           onDragEnd: onDragEnd,
+          animationDisabledOnDragging: animationDisabledOnDragging,
         );
 
   /// To achive the sticky header in horizontal gridview just call this horizontalStickyHeader constructor.
@@ -307,6 +313,7 @@ class DragAndDropGridView extends MainGridView {
     WidgetPositionBuilder? childWhenDragging,
     Function? onDragStarted,
     Function(DraggableDetails)? onDragEnd,
+    bool animationDisabledOnDragging = false,
   }) : super(
           key: key,
           reverse: reverse,
@@ -341,5 +348,6 @@ class DragAndDropGridView extends MainGridView {
           isVertical: false,
           onDragStarted: onDragStarted,
           onDragEnd: onDragEnd,
+          animationDisabledOnDragging: animationDisabledOnDragging,
         );
 }
