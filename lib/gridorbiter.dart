@@ -41,6 +41,7 @@ class MainGridView extends StatefulWidget {
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
     this.onDragStarted,
     this.onDragEnd,
+    this.animationDisabledOnDragging = false,
   });
 
   final Key? key;
@@ -85,6 +86,7 @@ class MainGridView extends StatefulWidget {
   final DragStartBehavior dragStartBehavior;
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
   final bool isVertical;
+  final bool animationDisabledOnDragging;
 
   // set you feedback child here and to get this working please set isCustomFeedback to true
   final WidgetPositionBuilder? feedback;
@@ -119,21 +121,25 @@ class MainGridViewState extends State<MainGridView> {
   }
 
   _moveUp() {
+    if (widget.animationDisabledOnDragging) return;
     _scrollController.animateTo(_scrollController.offset - _gridViewHeight,
         curve: Curves.linear, duration: Duration(milliseconds: 500));
   }
 
   _moveDown() {
+    if (widget.animationDisabledOnDragging) return;
     _scrollController.animateTo(_scrollController.offset + _gridViewHeight,
         curve: Curves.linear, duration: Duration(milliseconds: 500));
   }
 
   _moveLeft() {
+    if (widget.animationDisabledOnDragging) return;
     _scrollController.animateTo(_scrollController.offset - _gridViewWidth,
         curve: Curves.linear, duration: Duration(milliseconds: 500));
   }
 
   _moveRight() {
+    if (widget.animationDisabledOnDragging) return;
     _scrollController.animateTo(_scrollController.offset + _gridViewWidth,
         curve: Curves.linear, duration: Duration(milliseconds: 500));
   }
